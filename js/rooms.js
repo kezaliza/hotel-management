@@ -6,12 +6,14 @@ const roomTypeOptions = [
   'Family Room',
 ];
 const roomStatuses = ['Available', 'Occupied', 'Cleaning'];
-const hotelDataVersion = '2';
+const hotelDataVersion = '4';
 const roomVersionStorageKey = 'hotelDataVersion';
 const roomImages = {
-  'Deluxe Suite': ['images/rooms/deluxe-1.jpg', 'images/rooms/deluxe-2.jpg', 'images/rooms/deluxe-3.jpg'],
-  'Presidential Suite': ['images/rooms/presidential-1.jpg', 'images/rooms/presidential-2.jpg'],
-  'Ocean View Room': ['images/rooms/oceanview-1.jpg', 'images/rooms/oceanview-2.jpg', 'images/rooms/oceanview-3.jpg'],
+  'Deluxe Suite': ['public/room1.jpg', 'public/room2.jpg', 'public/room3.jpg'],
+  'Presidential Suite': ['public/room4.jpg', 'public/room5.jpg'],
+  'Ocean View Room': ['public/room6.jpg', 'public/room7.jpg'],
+  'Family Room': ['public/room8.jpg'],
+  'Single Room': ['public/room9.jpg'],
 };
 
 const initialRooms = [
@@ -109,7 +111,7 @@ const initialRooms = [
     size: 720,
     maxGuests: 6,
     status: 'Available',
-    images: ['https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85'],
+    images: roomImages['Family Room'],
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85',
     description: 'Room for everyone, with flexible sleeping arrangements and a relaxed lounge.',
   },
@@ -123,7 +125,7 @@ const initialRooms = [
     size: 240,
     maxGuests: 1,
     status: 'Available',
-    images: ['https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1000&q=85'],
+    images: roomImages['Single Room'],
     image: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1000&q=85',
     description: 'A thoughtfully appointed private room, ideal for a comfortable city stay.',
   },
@@ -137,7 +139,7 @@ const initialRooms = [
     size: 280,
     maxGuests: 1,
     status: 'Occupied',
-    images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85'],
+    images: roomImages['Single Room'],
     image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85',
     description: 'A peaceful courtyard-facing room with everything needed for a restful stay.',
   },

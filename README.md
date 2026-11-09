@@ -16,8 +16,6 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 ├── admin.html          # Local room inventory and messages inbox
 ├── css/
 │   └── style.css       # Shared design system and responsive styles
-├── images/
-│   └── rooms/          # Optional local room photos used by room galleries
 ├── js/
 │   ├── main.js         # Shared navigation, home, and contact behavior
 │   ├── rooms.js        # Room catalog and room filters
@@ -25,7 +23,8 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 │   └── admin.js        # Contact-message inbox
 └── public/
     ├── favicon.svg     # Site icon
-    └── room-placeholder.svg
+    ├── room-placeholder.svg
+    └── room1.jpg … room9.jpg
 ```
 
 ## Run locally with Live Server
@@ -58,4 +57,4 @@ This data is local to the browser profile and is not shared with a server or oth
 
 ## Room photos
 
-Put local gallery files in `images/rooms/`. The sample Deluxe Suite, Presidential Suite, and Ocean View Room galleries use `deluxe-1.jpg` through `deluxe-3.jpg`, `presidential-1.jpg` through `presidential-2.jpg`, and `oceanview-1.jpg` through `oceanview-3.jpg`. Rooms without a local gallery keep their existing Unsplash photo. A placeholder is shown if an image cannot be loaded.
+Room photos live in `public/`: `room1.jpg`–`room3.jpg` are used for Deluxe Suites, `room4.jpg`–`room5.jpg` for Presidential Suites, `room6.jpg`–`room7.jpg` for Ocean View Rooms, `room8.jpg` for Family Rooms, and `room9.jpg` for Single Rooms. The first path is the cover photo. A room's original Unsplash photo is used as a fallback if a local image cannot load, then the placeholder is used if that fallback also fails.
