@@ -270,40 +270,6 @@ if (featuredRoomsGrid) {
     }
   }
 
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const targetId = link.getAttribute('href');
-      const target = targetId && targetId.length > 1
-        ? document.getElementById(decodeURIComponent(targetId.slice(1)))
-        : null;
-
-      if (!target) {
-        return;
-      }
-
-      event.preventDefault();
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      window.history.pushState(null, '', targetId);
-    });
-  });
-
-  const backToTop = document.querySelector('.back-to-top');
-
-  if (backToTop) {
-    const updateBackToTopVisibility = () => {
-      backToTop.classList.toggle('is-visible', window.scrollY > 400);
-    };
-
-    backToTop.addEventListener('click', () => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-
-    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
-    updateBackToTopVisibility();
-  }
-
   featuredRoomsGrid.querySelectorAll('[data-book-room]').forEach((link) => {
     link.addEventListener('click', (event) => {
       const roomName = link.dataset.roomName;
@@ -324,6 +290,7 @@ if (featuredRoomsGrid) {
           featuredRoomsStatus.textContent = 'Your room selection could not be saved. Check your browser storage settings and try again.';
         }
       }
+
     });
   });
 
@@ -346,4 +313,114 @@ if (featuredRoomsGrid) {
       roomCardObserver.observe(card);
     });
   }
+}
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const targetId = link.getAttribute('href');
+    const target = targetId && targetId.length > 1
+      ? document.getElementById(decodeURIComponent(targetId.slice(1)))
+      : null;
+
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    window.history.pushState(null, '', targetId);
+  });
+});
+
+const backToTop = document.querySelector('.back-to-top');
+
+if (backToTop) {
+  const updateBackToTopVisibility = () => {
+    backToTop.classList.toggle('is-visible', window.scrollY > 400);
+  };
+
+  backToTop.addEventListener('click', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+  updateBackToTopVisibility();
+}
+
+const contactForm = document.querySelector('#contact-form');
+
+if (contactForm instanceof HTMLFormElement) {
+  const contactFields = [
+    contactForm.elements.namedItem('name'),
+    contactForm.elements.namedItem('email'),
+    contactForm.elements.namedItem('subject'),
+    contactForm.elements.namedItem('message'),
+  ];
+  const contactStatus = document.querySelector('#contact-form-status');
+
+  const validateContactField = (field) => {
+    const error = document.querySelector(`#${field.id}-error`);
+    const value = field.value.trim();
+    let message = '';
+
+    if (!value) {
+      message = 'This field is required.';
+    } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      message = 'Enter a valid email address.';
+    }
+
+    field.setAttribute('aria-invalid', String(Boolean(message)));
+    if (error) {
+      error.textContent = message;
+    }
+    return !message;
+  };
+
+  contactFields.forEach((field) => {
+    field.addEventListener('blur', () => validateContactField(field));
+    field.addEventListener('input', () => {
+      if (field.getAttribute('aria-invalid') === 'true') {
+        validateContactField(field);
+      }
+    });
+  });
+
+  contactForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const isValid = contactFields.map(validateContactField).every(Boolean);
+    if (!isValid) {
+      contactForm.querySelector('[aria-invalid="true"]')?.focus();
+      return;
+    }
+
+    const message = {
+      name: contactFields[0].value.trim(),
+      email: contactFields[1].value.trim(),
+      subject: contactFields[2].value.trim(),
+      message: contactFields[3].value.trim(),
+      date: new Date().toISOString(),
+    };
+
+    try {
+      const savedMessages = localStorage.getItem('hotelMessages');
+      const messages = savedMessages ? JSON.parse(savedMessages) : [];
+      if (!Array.isArray(messages)) {
+        throw new TypeError('Saved messages must be a list.');
+      }
+      localStorage.setItem('hotelMessages', JSON.stringify([...messages, message]));
+    } catch (error) {
+      contactStatus.textContent = 'Your message could not be saved. Please check your browser storage settings and try again.';
+      return;
+    }
+
+    contactForm.innerHTML = `
+      <div class="contact-thank-you" role="status">
+        <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+        <h3>Thank you for reaching out!</h3>
+        <p>Your message has been received. Our team will be in touch soon.</p>
+      </div>
+    `;
+  });
 }

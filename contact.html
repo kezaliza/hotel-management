@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Grand Luxe Hotel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a>
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a><a class="site-nav__link" href="about.html">About</a><a class="site-nav__link" href="rooms.html">Rooms</a><a class="site-nav__link" href="index.html#services">Services</a><a class="site-nav__link" href="blog.html">Blog</a><a class="site-nav__link is-active" href="contact.html" aria-current="page">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rooms-banner" aria-labelledby="page-banner-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="page-banner-title">Get in Touch</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page">Contact</span></nav>
+      </div>
+    </section>
+    <section class="contact-page container" aria-labelledby="contact-page-title">
+      <div class="page-section-heading contact-page__heading"><p class="page-eyebrow">We Are Here for You</p><h2 class="section-title" id="contact-page-title">Let's Start a Conversation</h2><p>Questions, plans, or a special request? Our team would be delighted to help.</p></div>
+      <div class="contact-layout">
+        <div class="card contact-form-card">
+          <h3>Send Us a Message</h3>
+          <form id="contact-form" novalidate>
+            <p class="contact-form__status" id="contact-form-status" role="status" aria-live="polite"></p>
+            <div class="contact-form__field">
+              <label for="contact-name">Full Name</label>
+              <input class="booking-form__control" id="contact-name" name="name" type="text" autocomplete="name" required aria-describedby="contact-name-error">
+              <small class="booking-form__field-error" id="contact-name-error" aria-live="polite"></small>
+            </div>
+            <div class="contact-form__field">
+              <label for="contact-email">Email Address</label>
+              <input class="booking-form__control" id="contact-email" name="email" type="email" autocomplete="email" required aria-describedby="contact-email-error">
+              <small class="booking-form__field-error" id="contact-email-error" aria-live="polite"></small>
+            </div>
+            <div class="contact-form__field">
+              <label for="contact-subject">Subject</label>
+              <input class="booking-form__control" id="contact-subject" name="subject" type="text" required aria-describedby="contact-subject-error">
+              <small class="booking-form__field-error" id="contact-subject-error" aria-live="polite"></small>
+            </div>
+            <div class="contact-form__field">
+              <label for="contact-message">Message</label>
+              <textarea class="booking-form__control booking-form__textarea" id="contact-message" name="message" rows="5" required aria-describedby="contact-message-error"></textarea>
+              <small class="booking-form__field-error" id="contact-message-error" aria-live="polite"></small>
+            </div>
+            <button class="btn btn-accent contact-form__submit" type="submit">Send Message <i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+          </form>
+        </div>
+
+        <aside class="card contact-details" aria-labelledby="contact-details-title">
+          <h3 id="contact-details-title">Contact Information</h3>
+          <ul class="contact-details__list">
+            <li><span class="contact-details__icon"><i class="fa-solid fa-phone" aria-hidden="true"></i></span><div><h4>Phone</h4><a href="tel:+250788000000">+250 788 000 000</a></div></li>
+            <li><span class="contact-details__icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><div><h4>Email</h4><a href="mailto:info@grandluxehotel.com">info@grandluxehotel.com</a></div></li>
+            <li><span class="contact-details__icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span><div><h4>Address</h4><p>KN 5 Rd, Kigali, Rwanda</p></div></li>
+            <li><span class="contact-details__icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span><div><h4>Opening Hours</h4><p>Reception is open 24 hours, every day.</p></div></li>
+          </ul>
+        </aside>
+      </div>
+      <div class="contact-map card">
+        <iframe title="Map showing Kigali, Rwanda" src="https://www.google.com/maps?q=Kigali%2C%20Rwanda&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column"><a class="site-brand site-footer__brand" href="index.html" aria-label="Grand Luxe Hotel home"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a><p class="site-footer__tagline">Redefining luxury hospitality with exceptional stays and unmatched service.</p><div class="site-footer__socials" aria-label="Social media"><a href="https://www.facebook.com/" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a><a href="https://www.instagram.com/" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a><a href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a><a href="https://www.youtube.com/" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></div></div>
+      <div class="site-footer__column"><h2 class="site-footer__heading">Quick Links</h2><ul class="site-footer__links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="rooms.html">Rooms</a></li><li><a href="index.html#services">Services</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html" aria-current="page">Contact</a></li></ul></div>
+      <div class="site-footer__column"><h2 class="site-footer__heading">Room Types</h2><ul class="site-footer__links"><li><a href="rooms.html">Deluxe Suite</a></li><li><a href="rooms.html">Presidential Suite</a></li><li><a href="rooms.html">Ocean View Room</a></li><li><a href="rooms.html">Family Room</a></li><li><a href="rooms.html">Single Room</a></li></ul></div>
+      <div class="site-footer__column"><h2 class="site-footer__heading">Contact Us</h2><ul class="site-footer__contact"><li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:+250788000000">+250 788 000 000</a></li><li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:info@grandluxehotel.com">info@grandluxehotel.com</a></li><li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>KN 5 Rd, Kigali, Rwanda</span></li></ul></div>
+    </div>
+    <div class="site-footer__bottom"><div class="site-footer__bottom-inner container"><p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p><nav class="site-footer__legal" aria-label="Legal"><a href="#privacy-policy">Privacy Policy</a><a href="#terms-and-conditions">Terms &amp; Conditions</a></nav></div></div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+</body>
+</html>

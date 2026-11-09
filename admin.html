@@ -3,14 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hotel Management | Admin</title>
+  <title>Messages | Grand Luxe Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/admin.js" defer></script>
 </head>
-<body>
-  <!-- Admin page -->
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <a class="site-brand admin-sidebar__brand" href="index.html">
+        <i class="fa-solid fa-crown" aria-hidden="true"></i>
+        <span>Grand Luxe</span>
+      </a>
+      <p class="admin-sidebar__label">Management</p>
+      <nav class="admin-menu" aria-label="Admin menu">
+        <a class="admin-menu__link is-active" href="#messages" aria-current="page">
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+          <span>Messages</span>
+          <span class="admin-menu__count" id="admin-message-count">0</span>
+        </a>
+      </nav>
+      <a class="admin-sidebar__website" href="index.html">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> View Website
+      </a>
+    </aside>
+
+    <main class="admin-main" id="messages">
+      <header class="admin-header">
+        <div>
+          <p class="page-eyebrow">Guest Communication</p>
+          <h1 class="admin-header__title">Messages</h1>
+        </div>
+        <span class="admin-header__brand"><i class="fa-solid fa-crown" aria-hidden="true"></i> Grand Luxe Hotel</span>
+      </header>
+
+      <section class="admin-messages" aria-labelledby="admin-messages-title">
+        <div class="admin-messages__heading">
+          <div>
+            <h2 id="admin-messages-title">Contact Form Inbox</h2>
+            <p>Messages submitted through the hotel contact page.</p>
+          </div>
+          <span class="admin-messages__total" id="admin-messages-total">0 messages</span>
+        </div>
+        <p class="admin-messages__error" id="admin-messages-error" role="alert" hidden></p>
+        <div class="admin-message-list" id="admin-message-list" aria-live="polite"></div>
+        <div class="admin-messages__empty card" id="admin-messages-empty" hidden>
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+          <h3>No messages yet</h3>
+          <p>New contact form submissions will appear here.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="admin-toast" id="admin-toast" role="status" aria-live="polite"></div>
 </body>
 </html>
