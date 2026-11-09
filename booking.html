@@ -3,14 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hotel Management | Booking</title>
+  <title>Book Your Stay | Grand Luxe Hotel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/rooms.js" defer></script>
   <script src="js/booking.js" defer></script>
 </head>
 <body>
-  <!-- Booking page -->
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home">
+        <i class="fa-solid fa-crown" aria-hidden="true"></i>
+        <span>Grand Luxe Hotel</span>
+      </a>
+
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a>
+        <a class="site-nav__link" href="index.html#about">About</a>
+        <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link" href="index.html#services">Services</a>
+        <a class="site-nav__link" href="index.html#blog">Blog</a>
+        <a class="site-nav__link" href="index.html#contact">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button
+          class="site-menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="site-navigation"
+          aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rooms-banner booking-banner" aria-labelledby="booking-banner-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="booking-banner-title">Book Your Stay</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          <span aria-current="page">Booking</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="booking-page container" aria-label="Complete your reservation">
+      <div class="booking-layout">
+        <div class="booking-form-column" id="booking-form-column">
+          <form class="card booking-form" id="reservation-form" novalidate>
+            <div class="booking-form__heading">
+              <p class="booking-form__eyebrow">Your Reservation</p>
+              <h2 class="section-title">Guest Details</h2>
+            </div>
+
+            <p class="booking-form__error" id="booking-form-error" role="alert" aria-live="assertive"></p>
+
+            <div class="booking-form__grid">
+              <div class="booking-form__field booking-form__field--full">
+                <label class="booking-form__label" for="booking-room">Room</label>
+                <select class="booking-form__control" id="booking-room" name="room" required aria-describedby="booking-room-error">
+                  <option value="">Loading available rooms...</option>
+                </select>
+                <small class="booking-form__field-error" id="booking-room-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field">
+                <label class="booking-form__label" for="booking-check-in">Check-in</label>
+                <input class="booking-form__control" id="booking-check-in" name="checkIn" type="date" required aria-describedby="booking-check-in-error">
+                <small class="booking-form__field-error" id="booking-check-in-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field">
+                <label class="booking-form__label" for="booking-check-out">Check-out</label>
+                <input class="booking-form__control" id="booking-check-out" name="checkOut" type="date" required aria-describedby="booking-check-out-error">
+                <small class="booking-form__field-error" id="booking-check-out-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field booking-form__field--full">
+                <label class="booking-form__label" for="booking-guests">Guests</label>
+                <select class="booking-form__control" id="booking-guests" name="guests" required aria-describedby="booking-guests-error">
+                  <option value="">Select a room first</option>
+                </select>
+                <small class="booking-form__field-error" id="booking-guests-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field">
+                <label class="booking-form__label" for="guest-name">Full Name</label>
+                <input class="booking-form__control" id="guest-name" name="guestName" type="text" autocomplete="name" required aria-describedby="guest-name-error">
+                <small class="booking-form__field-error" id="guest-name-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field">
+                <label class="booking-form__label" for="guest-email">Email</label>
+                <input class="booking-form__control" id="guest-email" name="email" type="email" autocomplete="email" required aria-describedby="guest-email-error">
+                <small class="booking-form__field-error" id="guest-email-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field booking-form__field--full">
+                <label class="booking-form__label" for="guest-phone">Phone</label>
+                <input class="booking-form__control" id="guest-phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="guest-phone-error">
+                <small class="booking-form__field-error" id="guest-phone-error" aria-live="polite"></small>
+              </div>
+
+              <div class="booking-form__field booking-form__field--full">
+                <label class="booking-form__label" for="special-requests">Special Requests <span>(optional)</span></label>
+                <textarea class="booking-form__control booking-form__textarea" id="special-requests" name="specialRequests" rows="4"></textarea>
+              </div>
+
+              <fieldset class="booking-form__field booking-form__field--full booking-payment">
+                <legend class="booking-form__label">Payment Method</legend>
+                <div class="booking-payment__options">
+                  <label class="booking-payment__option">
+                    <input type="radio" name="paymentMethod" value="Pay at Hotel" required>
+                    <span><i class="fa-solid fa-hotel" aria-hidden="true"></i> Pay at Hotel</span>
+                  </label>
+                  <label class="booking-payment__option">
+                    <input type="radio" name="paymentMethod" value="Credit Card" required>
+                    <span><i class="fa-regular fa-credit-card" aria-hidden="true"></i> Credit Card</span>
+                  </label>
+                  <label class="booking-payment__option">
+                    <input type="radio" name="paymentMethod" value="Mobile Money" required>
+                    <span><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Mobile Money</span>
+                  </label>
+                </div>
+                <small class="booking-form__field-error" id="payment-method-error" aria-live="polite"></small>
+              </fieldset>
+            </div>
+
+            <button class="btn btn-accent booking-form__submit" id="confirm-booking" type="submit">
+              Confirm Booking
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </form>
+        </div>
+
+        <aside class="card booking-summary" aria-labelledby="booking-summary-title">
+          <h2 class="booking-summary__title" id="booking-summary-title">Booking Summary</h2>
+          <img
+            class="booking-summary__image"
+            id="summary-room-image"
+            src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85"
+            alt="Selected hotel room"
+            loading="lazy">
+          <h3 class="booking-summary__room-name" id="summary-room-name">Select a room</h3>
+          <p class="booking-summary__nightly"><span id="summary-nightly-price">$0</span> / night</p>
+
+          <dl class="booking-summary__details">
+            <div><dt>Check-in</dt><dd id="summary-check-in">—</dd></div>
+            <div><dt>Check-out</dt><dd id="summary-check-out">—</dd></div>
+            <div><dt>Nights</dt><dd id="summary-nights">0</dd></div>
+            <div><dt>Guests</dt><dd id="summary-guests">—</dd></div>
+          </dl>
+
+          <div class="booking-summary__totals" aria-live="polite">
+            <div><span>Subtotal</span><span id="summary-subtotal">$0</span></div>
+            <div><span>Tax (10%)</span><span id="summary-tax">$0</span></div>
+            <div class="booking-summary__total"><span>Total</span><strong id="summary-total">$0</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column">
+        <a class="site-brand site-footer__brand" href="index.html" aria-label="Grand Luxe Hotel home">
+          <i class="fa-solid fa-crown" aria-hidden="true"></i>
+          <span>Grand Luxe Hotel</span>
+        </a>
+        <p class="site-footer__tagline">
+          Redefining luxury hospitality with exceptional stays and unmatched service.
+        </p>
+        <div class="site-footer__socials" aria-label="Social media">
+          <a href="https://www.facebook.com/" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Quick Links</h2>
+        <ul class="site-footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="rooms.html">Rooms</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#blog">Blog</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Room Types</h2>
+        <ul class="site-footer__links">
+          <li><a href="rooms.html">Deluxe Suite</a></li>
+          <li><a href="rooms.html">Presidential Suite</a></li>
+          <li><a href="rooms.html">Ocean View Room</a></li>
+          <li><a href="rooms.html">Family Room</a></li>
+          <li><a href="rooms.html">Single Room</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Contact Us</h2>
+        <ul class="site-footer__contact">
+          <li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:+250788000000">+250 788 000 000</a></li>
+          <li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:info@grandluxehotel.com">info@grandluxehotel.com</a></li>
+          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>KN 5 Rd, Kigali, Rwanda</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner container">
+        <p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p>
+        <nav class="site-footer__legal" aria-label="Legal">
+          <a href="index.html#privacy-policy">Privacy Policy</a>
+          <a href="index.html#terms-and-conditions">Terms &amp; Conditions</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
 </body>
 </html>

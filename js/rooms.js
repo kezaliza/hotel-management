@@ -206,6 +206,8 @@ const loadRooms = () => {
   return validateRooms(JSON.parse(savedRooms));
 };
 
+window.loadHotelRooms = loadRooms;
+
 const formatPrice = (price) => new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
