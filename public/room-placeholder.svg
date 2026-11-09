@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#3d0311"/>
+  <path d="M0 590h1200v210H0z" fill="#6d0a24"/>
+  <path d="M230 540V345h740v195M180 540h840v45H180z" fill="none" stroke="#d6db89" stroke-width="18"/>
+  <path d="M300 400h230v140H300zm370 0h230v140H670z" fill="#570418" stroke="#d6db89" stroke-width="14"/>
+  <path d="M565 540V310h70v230" fill="#d6db89"/>
+  <text x="600" y="700" fill="#fffaf0" font-family="Georgia,serif" font-size="42" text-anchor="middle">Room photo unavailable</text>
+</svg>

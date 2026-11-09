@@ -12,6 +12,7 @@
   const formError = document.querySelector('#booking-form-error');
   const submitButton = document.querySelector('#confirm-booking');
   const summaryImage = document.querySelector('#summary-room-image');
+  const summaryThumbnails = document.querySelector('#summary-room-thumbnails');
   const summaryRoomName = document.querySelector('#summary-room-name');
   const summaryNightlyPrice = document.querySelector('#summary-nightly-price');
   const summaryCheckIn = document.querySelector('#summary-check-in');
@@ -63,7 +64,11 @@
   const safeImageUrl = (value) => {
     try {
       const parsedUrl = new URL(value, window.location.href);
-      return parsedUrl.protocol === 'https:' ? parsedUrl.href : '';
+      const isRelativePath = !/^[a-z][a-z\d+.-]*:/i.test(value) && !value.startsWith('//');
+      return parsedUrl.protocol === 'https:'
+        || (isRelativePath && parsedUrl.origin === window.location.origin)
+        ? parsedUrl.href
+        : '';
     } catch {
       return '';
     }
@@ -148,8 +153,40 @@
     const tax = Math.round(subtotal * 0.1 * 100) / 100;
     const total = subtotal + tax;
 
-    summaryImage.src = safeImageUrl(selectedRoom?.image)
-      || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85';
+    const roomImages = selectedRoom?.images?.map(safeImageUrl).filter(Boolean) ?? [];
+    const coverImage = roomImages[0] ?? 'public/room-placeholder.svg';
+    if (summaryImage.dataset.roomId !== selectedRoom?.id) {
+      summaryImage.dataset.roomId = selectedRoom?.id ?? '';
+      summaryImage.src = coverImage;
+      summaryImage.dataset.fallbackSrc = selectedRoom?.image
+        ? safeImageUrl(selectedRoom.image)
+        : '';
+      delete summaryImage.dataset.fallbackApplied;
+      summaryThumbnails.replaceChildren(...roomImages.map((src, index) => {
+        const thumbnail = document.createElement('button');
+        thumbnail.className = `booking-summary__thumbnail${index === 0 ? ' is-active' : ''}`;
+        thumbnail.type = 'button';
+        thumbnail.setAttribute('aria-label', `Show room photo ${index + 1}`);
+        thumbnail.setAttribute('aria-pressed', String(index === 0));
+        const image = document.createElement('img');
+        image.src = src;
+        image.dataset.fallbackSrc = selectedRoom?.image ? safeImageUrl(selectedRoom.image) : '';
+        image.alt = `${selectedRoom.name}, photo ${index + 1}`;
+        image.loading = 'lazy';
+        thumbnail.append(image);
+        thumbnail.addEventListener('click', () => {
+          delete summaryImage.dataset.fallbackApplied;
+          summaryImage.src = src;
+          summaryImage.alt = image.alt;
+          summaryThumbnails.querySelectorAll('.booking-summary__thumbnail').forEach((item, itemIndex) => {
+            item.classList.toggle('is-active', itemIndex === index);
+            item.setAttribute('aria-pressed', String(itemIndex === index));
+          });
+        });
+        return thumbnail;
+      }));
+      summaryImage.alt = selectedRoom ? `${selectedRoom.name}, cover photo` : 'Selected hotel room';
+    }
     summaryImage.alt = selectedRoom ? selectedRoom.name : 'Selected hotel room';
     summaryRoomName.textContent = selectedRoom?.name ?? 'Select a room';
     summaryNightlyPrice.textContent = formatPrice(selectedRoom?.price ?? 0);

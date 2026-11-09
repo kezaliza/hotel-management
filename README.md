@@ -13,16 +13,19 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 ├── blog.html           # Hotel and Kigali journal
 ├── contact.html        # Contact form and location
 ├── policies.html       # Privacy and demonstration terms
-├── admin.html          # Local messages inbox
+├── admin.html          # Local room inventory and messages inbox
 ├── css/
 │   └── style.css       # Shared design system and responsive styles
+├── images/
+│   └── rooms/          # Optional local room photos used by room galleries
 ├── js/
 │   ├── main.js         # Shared navigation, home, and contact behavior
 │   ├── rooms.js        # Room catalog and room filters
 │   ├── booking.js      # Booking form and price calculations
 │   └── admin.js        # Contact-message inbox
 └── public/
-    └── favicon.svg     # Site icon
+    ├── favicon.svg     # Site icon
+    └── room-placeholder.svg
 ```
 
 ## Run locally with Live Server
@@ -49,5 +52,10 @@ The demonstration stores data in the browser's `localStorage`:
 - `hotelMessages` — contact form messages
 - `favoriteRooms` — favorite room names
 - `hotelBookingSearch` and `selectedHotelRoom` — search and booking handoff data
+- `hotelDataVersion` — version of the default room catalog
 
 This data is local to the browser profile and is not shared with a server or other devices.
+
+## Room photos
+
+Put local gallery files in `images/rooms/`. The sample Deluxe Suite, Presidential Suite, and Ocean View Room galleries use `deluxe-1.jpg` through `deluxe-3.jpg`, `presidential-1.jpg` through `presidential-2.jpg`, and `oceanview-1.jpg` through `oceanview-3.jpg`. Rooms without a local gallery keep their existing Unsplash photo. A placeholder is shown if an image cannot be loaded.

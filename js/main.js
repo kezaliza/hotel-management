@@ -1,3 +1,166 @@
+const roomImageFallback = 'public/room-placeholder.svg';
+
+document.addEventListener('error', (event) => {
+  const image = event.target;
+  if (!(image instanceof HTMLImageElement) || image.dataset.fallbackApplied === 'placeholder') {
+    return;
+  }
+
+  const fallback = image.dataset.fallbackSrc;
+  if (fallback && image.dataset.fallbackApplied !== 'remote' && image.src !== fallback) {
+    image.dataset.fallbackApplied = 'remote';
+    image.src = fallback;
+    return;
+  }
+  image.dataset.fallbackApplied = 'placeholder';
+  image.src = roomImageFallback;
+}, true);
+
+const makeGalleryUrl = (value) => {
+  try {
+    const url = new URL(value, window.location.href);
+    const isRelativePath = !/^[a-z][a-z\d+.-]*:/i.test(value) && !value.startsWith('//');
+    return url.protocol === 'https:'
+      || (isRelativePath && url.origin === window.location.origin)
+      ? url.href
+      : '';
+  } catch {
+    return '';
+  }
+};
+
+const galleryDialog = document.createElement('dialog');
+galleryDialog.className = 'room-gallery';
+galleryDialog.setAttribute('aria-label', 'Room photo gallery');
+galleryDialog.innerHTML = `
+  <div class="room-gallery__panel">
+    <button class="room-gallery__close" type="button" aria-label="Close photo gallery">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <h2 class="room-gallery__title"></h2>
+    <div class="room-gallery__stage">
+      <button class="room-gallery__arrow room-gallery__arrow--previous" type="button" aria-label="Previous photo">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      </button>
+      <img class="room-gallery__image" alt="">
+      <button class="room-gallery__arrow room-gallery__arrow--next" type="button" aria-label="Next photo">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      </button>
+    </div>
+    <p class="room-gallery__counter" aria-live="polite"></p>
+    <div class="room-gallery__thumbnails" aria-label="Choose a photo"></div>
+  </div>
+`;
+document.body.append(galleryDialog);
+
+const galleryImage = galleryDialog.querySelector('.room-gallery__image');
+const galleryCounter = galleryDialog.querySelector('.room-gallery__counter');
+const galleryThumbnails = galleryDialog.querySelector('.room-gallery__thumbnails');
+let galleryImages = [];
+let galleryTitle = '';
+let galleryFallback = '';
+let galleryIndex = 0;
+let galleryTouchStartX = 0;
+
+const showGalleryImage = (index) => {
+  if (!galleryImages.length) {
+    return;
+  }
+
+  galleryIndex = (index + galleryImages.length) % galleryImages.length;
+  galleryImage.classList.add('is-changing');
+  window.setTimeout(() => {
+    delete galleryImage.dataset.fallbackApplied;
+    galleryImage.dataset.fallbackSrc = galleryFallback;
+    galleryImage.src = galleryImages[galleryIndex];
+    galleryImage.alt = `${galleryTitle}, photo ${galleryIndex + 1}`;
+    galleryImage.classList.remove('is-changing');
+  }, 100);
+  galleryCounter.textContent = `Image ${galleryIndex + 1} of ${galleryImages.length}`;
+  galleryThumbnails.querySelectorAll('[data-gallery-index]').forEach((thumbnail, thumbnailIndex) => {
+    const isActive = thumbnailIndex === galleryIndex;
+    thumbnail.classList.toggle('is-active', isActive);
+    thumbnail.setAttribute('aria-current', String(isActive));
+  });
+};
+
+const openGallery = (trigger) => {
+  let images;
+  try {
+    images = JSON.parse(trigger.dataset.galleryImages ?? '[]');
+  } catch (error) {
+    return;
+  }
+
+  galleryImages = Array.isArray(images) ? images.map(makeGalleryUrl).filter(Boolean) : [];
+  galleryTitle = trigger.dataset.galleryTitle ?? 'Room photos';
+  galleryFallback = makeGalleryUrl(trigger.dataset.galleryFallback ?? '');
+  if (!galleryImages.length) {
+    return;
+  }
+
+  galleryDialog.querySelector('.room-gallery__title').textContent = galleryTitle;
+  galleryThumbnails.replaceChildren(...galleryImages.map((src, index) => {
+    const thumbnail = document.createElement('button');
+    thumbnail.className = 'room-gallery__thumbnail';
+    thumbnail.type = 'button';
+    thumbnail.dataset.galleryIndex = String(index);
+    thumbnail.setAttribute('aria-label', `Show photo ${index + 1}`);
+    const image = document.createElement('img');
+    image.src = src;
+    image.dataset.fallbackSrc = makeGalleryUrl(trigger.dataset.galleryFallback ?? '');
+    image.alt = `${galleryTitle}, thumbnail ${index + 1}`;
+    image.loading = 'lazy';
+    thumbnail.append(image);
+    thumbnail.addEventListener('click', () => showGalleryImage(index));
+    return thumbnail;
+  }));
+  showGalleryImage(0);
+  if (!galleryDialog.open) {
+    galleryDialog.showModal();
+  }
+};
+
+document.addEventListener('click', (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+  const trigger = event.target.closest('[data-open-gallery]');
+  if (trigger instanceof HTMLButtonElement) {
+    openGallery(trigger);
+  }
+});
+
+galleryDialog.querySelector('.room-gallery__close').addEventListener('click', () => galleryDialog.close());
+galleryDialog.querySelector('.room-gallery__arrow--previous').addEventListener('click', () => showGalleryImage(galleryIndex - 1));
+galleryDialog.querySelector('.room-gallery__arrow--next').addEventListener('click', () => showGalleryImage(galleryIndex + 1));
+galleryDialog.addEventListener('click', (event) => {
+  if (event.target === galleryDialog) {
+    galleryDialog.close();
+  }
+});
+galleryDialog.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    showGalleryImage(galleryIndex - 1);
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    showGalleryImage(galleryIndex + 1);
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    galleryDialog.close();
+  }
+});
+galleryImage.addEventListener('touchstart', (event) => {
+  galleryTouchStartX = event.changedTouches[0].clientX;
+}, { passive: true });
+galleryImage.addEventListener('touchend', (event) => {
+  const distance = event.changedTouches[0].clientX - galleryTouchStartX;
+  if (Math.abs(distance) > 40) {
+    showGalleryImage(galleryIndex + (distance < 0 ? 1 : -1));
+  }
+}, { passive: true });
+
 const siteHeader = document.querySelector('.site-header');
 const menuToggle = document.querySelector('.site-menu-toggle');
 const siteNavigation = document.querySelector('#site-navigation');
@@ -210,6 +373,38 @@ const featuredRoomsGrid = document.querySelector('#featured-rooms-grid');
 const featuredRoomsStatus = document.querySelector('#featured-rooms-status');
 
 if (featuredRoomsGrid) {
+  if (typeof window.loadHotelRooms === 'function') {
+    try {
+      const roomCatalog = window.loadHotelRooms();
+      const featuredTypes = new Set(['Deluxe Suite', 'Presidential Suite', 'Ocean View Room']);
+      featuredRoomsGrid.querySelectorAll('[data-room-card]').forEach((card) => {
+        const name = card.querySelector('.room-card__name')?.textContent.trim();
+        if (!featuredTypes.has(name)) {
+          return;
+        }
+        const room = roomCatalog.find((item) => item.type === name);
+        if (!room) {
+          return;
+        }
+        const image = card.querySelector('.room-card__image');
+        const galleryButton = card.querySelector('[data-open-gallery]');
+        image.src = makeGalleryUrl(room.images[0]) || roomImageFallback;
+        image.dataset.fallbackSrc = makeGalleryUrl(room.image);
+        image.alt = `${name} room cover photo`;
+        delete image.dataset.fallbackApplied;
+        galleryButton.dataset.galleryTitle = name;
+        galleryButton.dataset.galleryFallback = makeGalleryUrl(room.image);
+        galleryButton.dataset.galleryImages = JSON.stringify(room.images);
+        galleryButton.setAttribute('aria-label', `View ${room.images.length} photos of ${name}`);
+        galleryButton.innerHTML = `<i class="fa-solid fa-camera" aria-hidden="true"></i> ${room.images.length}`;
+      });
+    } catch (error) {
+      if (featuredRoomsStatus) {
+        featuredRoomsStatus.textContent = 'Room photos could not be loaded from the saved room catalog.';
+      }
+    }
+  }
+
   const favoriteButtons = [...featuredRoomsGrid.querySelectorAll('[data-favorite-room]')];
   const favoriteRoomNames = new Set(favoriteButtons.map((button) => button.dataset.favoriteRoom));
   const setFavoriteState = (button, isFavorite) => {

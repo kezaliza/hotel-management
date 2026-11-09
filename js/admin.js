@@ -4,7 +4,23 @@ const messagesError = document.querySelector('#admin-messages-error');
 const messagesTotal = document.querySelector('#admin-messages-total');
 const messageCount = document.querySelector('#admin-message-count');
 const messageToast = document.querySelector('#admin-toast');
+const adminImageFallback = 'public/room-placeholder.svg';
 let toastTimeout;
+
+document.addEventListener('error', (event) => {
+  const image = event.target;
+  if (!(image instanceof HTMLImageElement) || image.dataset.fallbackApplied === 'placeholder') {
+    return;
+  }
+  const fallback = image.dataset.fallbackSrc;
+  if (fallback && image.dataset.fallbackApplied !== 'remote' && image.src !== fallback) {
+    image.dataset.fallbackApplied = 'remote';
+    image.src = fallback;
+    return;
+  }
+  image.dataset.fallbackApplied = 'placeholder';
+  image.src = adminImageFallback;
+}, true);
 
 const formatMessageDate = (dateValue) => {
   const date = new Date(dateValue);
@@ -152,6 +168,211 @@ if (messageList && emptyMessages && messagesError && messagesTotal && messageCou
       renderMessages();
     }
   });
-
   renderMessages();
 }
+
+const roomList = document.querySelector('#admin-rooms-list');
+    const roomCount = document.querySelector('#admin-room-count');
+    const roomError = document.querySelector('#admin-rooms-error');
+    const roomDialog = document.querySelector('#admin-room-dialog');
+    const roomForm = document.querySelector('#admin-room-form');
+    const roomPreviews = document.querySelector('#admin-room-previews');
+    const roomFormError = document.querySelector('#admin-room-form-error');
+
+    const safeRoomImageUrl = (value) => {
+      try {
+        const url = new URL(value, window.location.href);
+        const isRelativePath = !/^[a-z][a-z\d+.-]*:/i.test(value) && !value.startsWith('//');
+        return url.protocol === 'https:'
+          || (isRelativePath && url.origin === window.location.origin)
+          ? url.href
+          : adminImageFallback;
+      } catch (error) {
+        return adminImageFallback;
+      }
+    };
+
+    const showRoomError = (element, message) => {
+      element.textContent = message;
+      element.hidden = !message;
+    };
+
+    const loadAdminRooms = () => {
+      if (typeof window.loadHotelRooms !== 'function') {
+        throw new TypeError('Room storage is not available.');
+      }
+      return window.loadHotelRooms();
+    };
+
+    const renderAdminRooms = () => {
+      if (!roomList || !roomCount || !roomError) {
+        return;
+      }
+      try {
+        const rooms = loadAdminRooms();
+        roomCount.textContent = String(rooms.length);
+        roomList.replaceChildren(...rooms.map((room) => {
+          const row = document.createElement('tr');
+          const coverCell = document.createElement('td');
+          const cover = document.createElement('img');
+          cover.className = 'admin-rooms__cover';
+          cover.src = safeRoomImageUrl(room.images[0]);
+          cover.dataset.fallbackSrc = safeRoomImageUrl(room.image);
+          cover.alt = `${room.name} cover photo`;
+          cover.loading = 'lazy';
+          coverCell.append(cover);
+          const values = [room.name, room.type, `$${room.price}`, room.status, String(room.images.length)];
+          const cells = values.map((value) => {
+            const cell = document.createElement('td');
+            cell.textContent = value;
+            return cell;
+          });
+          const actions = document.createElement('td');
+          const edit = document.createElement('button');
+          edit.className = 'btn btn-outline admin-rooms__edit';
+          edit.type = 'button';
+          edit.textContent = 'Edit';
+          edit.dataset.editRoom = room.id;
+          actions.append(edit);
+          row.append(coverCell, ...cells, actions);
+          return row;
+        }));
+        showRoomError(roomError, '');
+      } catch (error) {
+        roomList.replaceChildren();
+        roomCount.textContent = '!';
+        showRoomError(roomError, 'Rooms could not be loaded from browser storage.');
+      }
+    };
+
+    const previewRoomImages = () => {
+      const paths = roomForm.elements.namedItem('images').value
+        .split(/\r?\n/)
+        .map((path) => path.trim())
+        .filter(Boolean);
+      roomPreviews.replaceChildren(...paths.map((path, index) => {
+        const image = document.createElement('img');
+        image.src = safeRoomImageUrl(path);
+        image.dataset.fallbackSrc = '';
+        image.alt = `Room photo preview ${index + 1}`;
+        image.loading = 'lazy';
+        image.title = path;
+        return image;
+      }));
+    };
+
+    const openRoomEditor = (room = null) => {
+      roomForm.reset();
+      roomFormError.hidden = true;
+      roomFormError.textContent = '';
+      roomForm.elements.namedItem('id').value = room?.id ?? '';
+      roomForm.elements.namedItem('name').value = room?.name ?? '';
+      roomForm.elements.namedItem('type').value = room?.type ?? 'Single Room';
+      roomForm.elements.namedItem('price').value = room?.price ?? '';
+      roomForm.elements.namedItem('status').value = room?.status ?? 'Available';
+      roomForm.elements.namedItem('beds').value = room?.beds ?? 1;
+      roomForm.elements.namedItem('baths').value = room?.baths ?? 1;
+      roomForm.elements.namedItem('size').value = room?.size ?? '';
+      roomForm.elements.namedItem('maxGuests').value = room?.maxGuests ?? 1;
+      roomForm.elements.namedItem('images').value = (room?.images ?? []).join('\n');
+      roomForm.elements.namedItem('description').value = room?.description ?? '';
+      roomDialog.querySelector('#admin-room-dialog-title').textContent = room ? 'Edit Room' : 'Add Room';
+      previewRoomImages();
+      roomDialog.showModal();
+      roomForm.elements.namedItem('name').focus();
+    };
+
+    if (roomList && roomCount && roomError && roomDialog && roomForm && roomPreviews && roomFormError) {
+      renderAdminRooms();
+
+      document.querySelector('#admin-add-room').addEventListener('click', () => openRoomEditor());
+      roomDialog.querySelector('.admin-room-dialog__close').addEventListener('click', () => roomDialog.close());
+      document.querySelector('#admin-room-cancel').addEventListener('click', () => roomDialog.close());
+      roomForm.elements.namedItem('images').addEventListener('input', previewRoomImages);
+
+      roomDialog.addEventListener('click', (event) => {
+        if (event.target === roomDialog) {
+          roomDialog.close();
+        }
+      });
+      roomDialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          roomDialog.close();
+        }
+      });
+
+      roomList.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) {
+          return;
+        }
+        const editButton = event.target.closest('[data-edit-room]');
+        if (!editButton) {
+          return;
+        }
+        try {
+          const room = loadAdminRooms().find((item) => item.id === editButton.dataset.editRoom);
+          if (!room) {
+            throw new RangeError('The selected room no longer exists.');
+          }
+          openRoomEditor(room);
+        } catch (error) {
+          showRoomError(roomError, 'The selected room could not be loaded for editing.');
+        }
+      });
+
+      roomForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!roomForm.reportValidity()) {
+          return;
+        }
+        const fields = roomForm.elements;
+        const images = fields.namedItem('images').value.split(/\r?\n/).map((path) => path.trim()).filter(Boolean);
+        if (!images.length) {
+          showRoomError(roomFormError, 'Enter at least one image path or URL.');
+          return;
+        }
+        try {
+          const rooms = loadAdminRooms();
+          const editingId = fields.namedItem('id').value;
+          const suffix = rooms.reduce((maximum, room) => {
+            const match = room.id.match(/^R(\d+)$/);
+            return match ? Math.max(maximum, Number(match[1])) : maximum;
+          }, 100);
+          const room = {
+            id: editingId || `R${suffix + 1}`,
+            name: fields.namedItem('name').value.trim(),
+            type: fields.namedItem('type').value,
+            price: Number(fields.namedItem('price').value),
+            status: fields.namedItem('status').value,
+            beds: Number(fields.namedItem('beds').value),
+            baths: Number(fields.namedItem('baths').value),
+            size: Number(fields.namedItem('size').value),
+            maxGuests: Number(fields.namedItem('maxGuests').value),
+            images,
+            image: images[0],
+            description: fields.namedItem('description').value.trim(),
+          };
+          const updatedRooms = editingId
+            ? rooms.map((existing) => existing.id === editingId ? room : existing)
+            : [...rooms, room];
+          if (typeof window.saveHotelRooms !== 'function') {
+            throw new TypeError('Room storage is not available.');
+          }
+          window.saveHotelRooms(updatedRooms);
+          renderAdminRooms();
+          roomDialog.close();
+          if (messageToast) {
+            showMessageToast(editingId ? 'Room updated.' : 'Room added.');
+          }
+        } catch (error) {
+          showRoomError(roomFormError, error instanceof Error ? error.message : 'The room could not be saved.');
+        }
+      });
+
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'hotelRooms' || event.key === 'hotelDataVersion') {
+          renderAdminRooms();
+        }
+      });
+    }

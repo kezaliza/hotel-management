@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/rooms.js" defer></script>
   <script src="js/admin.js" defer></script>
 </head>
 <body class="admin-page">
@@ -21,6 +22,11 @@
       </a>
       <p class="admin-sidebar__label">Management</p>
       <nav class="admin-menu" aria-label="Admin menu">
+        <a class="admin-menu__link" href="#rooms">
+          <i class="fa-solid fa-bed" aria-hidden="true"></i>
+          <span>Rooms</span>
+          <span class="admin-menu__count" id="admin-room-count">0</span>
+        </a>
         <a class="admin-menu__link is-active" href="#messages" aria-current="page">
           <i class="fa-regular fa-envelope" aria-hidden="true"></i>
           <span>Messages</span>
@@ -41,6 +47,27 @@
         <span class="admin-header__brand"><i class="fa-solid fa-crown" aria-hidden="true"></i> Grand Luxe Hotel</span>
       </header>
 
+      <section class="admin-rooms" id="rooms" aria-labelledby="admin-rooms-title">
+        <div class="admin-messages__heading">
+          <div>
+            <h2 id="admin-rooms-title">Room Inventory</h2>
+            <p>Manage room details, availability, and photo galleries.</p>
+          </div>
+          <button class="btn btn-accent" id="admin-add-room" type="button">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Room
+          </button>
+        </div>
+        <p class="admin-rooms__error" id="admin-rooms-error" role="alert" hidden></p>
+        <div class="admin-rooms__table-wrap card">
+          <table class="admin-rooms__table">
+            <thead>
+              <tr><th scope="col">Cover</th><th scope="col">Room</th><th scope="col">Type</th><th scope="col">Price</th><th scope="col">Status</th><th scope="col">Photos</th><th scope="col">Actions</th></tr>
+            </thead>
+            <tbody id="admin-rooms-list"></tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="admin-messages" aria-labelledby="admin-messages-title">
         <div class="admin-messages__heading">
           <div>
@@ -57,6 +84,47 @@
           <p>New contact form submissions will appear here.</p>
         </div>
       </section>
+
+      <dialog class="admin-room-dialog" id="admin-room-dialog" aria-labelledby="admin-room-dialog-title">
+        <form class="admin-room-form" id="admin-room-form">
+          <div class="admin-room-form__heading">
+            <h2 id="admin-room-dialog-title">Add Room</h2>
+            <button class="admin-room-dialog__close" type="button" aria-label="Close room editor">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+          <input id="admin-room-id" name="id" type="hidden">
+          <div class="admin-room-form__grid">
+            <label>Room name<input name="name" required></label>
+            <label>Room type
+              <select name="type" required>
+                <option>Single Room</option><option>Deluxe Suite</option><option>Presidential Suite</option><option>Ocean View Room</option><option>Family Room</option>
+              </select>
+            </label>
+            <label>Price per night ($)<input name="price" type="number" min="0" step="1" required></label>
+            <label>Status
+              <select name="status" required><option>Available</option><option>Occupied</option><option>Cleaning</option></select>
+            </label>
+            <label>Beds<input name="beds" type="number" min="1" step="1" required></label>
+            <label>Baths<input name="baths" type="number" min="1" step="1" required></label>
+            <label>Size (sq ft)<input name="size" type="number" min="1" step="1" required></label>
+            <label>Maximum guests<input name="maxGuests" type="number" min="1" max="20" step="1" required></label>
+            <label class="admin-room-form__wide">Images (one path or URL per line)
+              <textarea name="images" rows="4" required placeholder="images/rooms/deluxe-1.jpg&#10;images/rooms/deluxe-2.jpg"></textarea>
+            </label>
+            <div class="admin-room-form__wide">
+              <span class="admin-room-form__preview-label">Image previews</span>
+              <div class="admin-room-form__previews" id="admin-room-previews" aria-live="polite"></div>
+            </div>
+            <label class="admin-room-form__wide">Short description<textarea name="description" rows="3" required></textarea></label>
+          </div>
+          <p class="admin-rooms__error" id="admin-room-form-error" role="alert" hidden></p>
+          <div class="admin-room-form__actions">
+            <button class="btn btn-outline" id="admin-room-cancel" type="button">Cancel</button>
+            <button class="btn btn-accent" type="submit">Save Room</button>
+          </div>
+        </form>
+      </dialog>
     </main>
   </div>
   <div class="admin-toast" id="admin-toast" role="status" aria-live="polite"></div>

@@ -6,6 +6,13 @@ const roomTypeOptions = [
   'Family Room',
 ];
 const roomStatuses = ['Available', 'Occupied', 'Cleaning'];
+const hotelDataVersion = '2';
+const roomVersionStorageKey = 'hotelDataVersion';
+const roomImages = {
+  'Deluxe Suite': ['images/rooms/deluxe-1.jpg', 'images/rooms/deluxe-2.jpg', 'images/rooms/deluxe-3.jpg'],
+  'Presidential Suite': ['images/rooms/presidential-1.jpg', 'images/rooms/presidential-2.jpg'],
+  'Ocean View Room': ['images/rooms/oceanview-1.jpg', 'images/rooms/oceanview-2.jpg', 'images/rooms/oceanview-3.jpg'],
+};
 
 const initialRooms = [
   {
@@ -18,6 +25,7 @@ const initialRooms = [
     size: 450,
     maxGuests: 3,
     status: 'Available',
+    images: roomImages['Deluxe Suite'],
     image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85',
     description: 'A serene suite with a king bed, elegant sitting area, and calming garden views.',
   },
@@ -31,6 +39,7 @@ const initialRooms = [
     size: 510,
     maxGuests: 4,
     status: 'Available',
+    images: roomImages['Deluxe Suite'],
     image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=85',
     description: 'Contemporary comfort with a separate lounge and sweeping city views.',
   },
@@ -44,6 +53,7 @@ const initialRooms = [
     size: 1200,
     maxGuests: 6,
     status: 'Occupied',
+    images: roomImages['Presidential Suite'],
     image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=85',
     description: 'Our grandest residence, with expansive living and dining spaces for special stays.',
   },
@@ -57,6 +67,7 @@ const initialRooms = [
     size: 1050,
     maxGuests: 6,
     status: 'Available',
+    images: roomImages['Presidential Suite'],
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=85',
     description: 'A private, light-filled retreat featuring premium finishes and a private balcony.',
   },
@@ -70,6 +81,7 @@ const initialRooms = [
     size: 380,
     maxGuests: 2,
     status: 'Cleaning',
+    images: roomImages['Ocean View Room'],
     image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=85',
     description: 'Wake to beautiful ocean views from this tranquil room with a private terrace.',
   },
@@ -83,6 +95,7 @@ const initialRooms = [
     size: 430,
     maxGuests: 3,
     status: 'Available',
+    images: roomImages['Ocean View Room'],
     image: 'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=1000&q=85',
     description: 'A spacious coastal escape with a front-row view of the water and sunset.',
   },
@@ -96,6 +109,7 @@ const initialRooms = [
     size: 720,
     maxGuests: 6,
     status: 'Available',
+    images: ['https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85'],
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85',
     description: 'Room for everyone, with flexible sleeping arrangements and a relaxed lounge.',
   },
@@ -109,6 +123,7 @@ const initialRooms = [
     size: 240,
     maxGuests: 1,
     status: 'Available',
+    images: ['https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1000&q=85'],
     image: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1000&q=85',
     description: 'A thoughtfully appointed private room, ideal for a comfortable city stay.',
   },
@@ -122,6 +137,7 @@ const initialRooms = [
     size: 280,
     maxGuests: 1,
     status: 'Occupied',
+    images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85'],
     image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85',
     description: 'A peaceful courtyard-facing room with everything needed for a restful stay.',
   },
@@ -177,15 +193,24 @@ const validateRooms = (rooms) => {
       && Number.isInteger(Number(room.maxGuests))
       && Number(room.maxGuests) > 0
       && roomStatuses.includes(room.status)
-      && typeof room.image === 'string'
+      && (typeof room.image === 'string' || Array.isArray(room.images))
       && typeof room.description === 'string';
 
     if (!isValid) {
       throw new TypeError(`Room ${index + 1} has invalid or incomplete data.`);
     }
     ids.add(room.id);
+    const images = Array.isArray(room.images)
+      ? room.images.filter((image) => typeof image === 'string' && image.trim())
+      : (typeof room.image === 'string' && room.image.trim() ? [room.image] : []);
+    if (images.length === 0) {
+      throw new TypeError(`Room ${index + 1} must have at least one image.`);
+    }
+
     return {
       ...room,
+      images,
+      image: typeof room.image === 'string' && room.image.trim() ? room.image : images[0],
       price: Number(room.price),
       beds: Number(room.beds),
       baths: Number(room.baths),
@@ -197,16 +222,29 @@ const validateRooms = (rooms) => {
 
 const loadRooms = () => {
   const savedRooms = localStorage.getItem(roomStorageKey);
-  if (savedRooms === null) {
+  const savedVersion = localStorage.getItem(roomVersionStorageKey);
+  if (savedRooms === null || savedVersion !== hotelDataVersion) {
     const rooms = validateRooms(initialRooms);
     localStorage.setItem(roomStorageKey, JSON.stringify(rooms));
+    localStorage.setItem(roomVersionStorageKey, hotelDataVersion);
     return rooms;
   }
 
-  return validateRooms(JSON.parse(savedRooms));
+  const parsedRooms = JSON.parse(savedRooms);
+  const rooms = validateRooms(parsedRooms);
+  if (rooms.some((room, index) => !Array.isArray(parsedRooms[index]?.images))) {
+    localStorage.setItem(roomStorageKey, JSON.stringify(rooms));
+  }
+  return rooms;
 };
 
 window.loadHotelRooms = loadRooms;
+window.saveHotelRooms = (rooms) => {
+  const validRooms = validateRooms(rooms);
+  localStorage.setItem(roomStorageKey, JSON.stringify(validRooms));
+  localStorage.setItem(roomVersionStorageKey, hotelDataVersion);
+  return validRooms;
+};
 
 const formatPrice = (price) => new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -217,7 +255,11 @@ const formatPrice = (price) => new Intl.NumberFormat('en-US', {
 const safeImageUrl = (image) => {
   try {
     const parsedUrl = new URL(image, window.location.href);
-    return parsedUrl.protocol === 'https:' ? parsedUrl.href : '';
+    const isRelativePath = !/^[a-z][a-z\d+.-]*:/i.test(image) && !image.startsWith('//');
+    return parsedUrl.protocol === 'https:'
+      || (isRelativePath && parsedUrl.origin === window.location.origin)
+      ? parsedUrl.href
+      : '';
   } catch {
     return '';
   }
@@ -231,7 +273,8 @@ const showError = (message) => {
 const makeRoomCard = (room) => {
   const statusClass = room.status.toLowerCase();
   const isAvailable = room.status === 'Available';
-  const image = safeImageUrl(room.image);
+  const images = room.images.map(safeImageUrl).filter(Boolean);
+  const image = images[0] ?? '';
   const favorite = favorites.has(room.name);
   const wrapper = document.createElement('div');
   wrapper.className = 'rooms-grid__item';
@@ -241,9 +284,13 @@ const makeRoomCard = (room) => {
         <img
           class="room-card__image"
           src="${escapeHtml(image)}"
+          data-fallback-src="${escapeHtml(safeImageUrl(room.image))}"
           alt="${escapeHtml(room.name)}"
           loading="lazy">
         <span class="room-card__tag room-card__tag--${escapeHtml(statusClass)}">${escapeHtml(room.status)}</span>
+        <button class="room-card__photo-count" type="button" data-open-gallery data-gallery-title="${escapeHtml(room.name)}" data-gallery-fallback="${escapeHtml(safeImageUrl(room.image))}" data-gallery-images="${escapeHtml(JSON.stringify(images))}" aria-label="View ${images.length} photos of ${escapeHtml(room.name)}">
+          <i class="fa-solid fa-camera" aria-hidden="true"></i> ${images.length}
+        </button>
         <button
           class="room-card__favorite${favorite ? ' is-favorite' : ''}"
           type="button"
