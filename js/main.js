@@ -205,3 +205,145 @@ if (statsStrip) {
     animateCounters();
   }
 }
+
+const featuredRoomsGrid = document.querySelector('#featured-rooms-grid');
+const featuredRoomsStatus = document.querySelector('#featured-rooms-status');
+
+if (featuredRoomsGrid) {
+  const favoriteButtons = [...featuredRoomsGrid.querySelectorAll('[data-favorite-room]')];
+  const favoriteRoomNames = new Set(favoriteButtons.map((button) => button.dataset.favoriteRoom));
+  const setFavoriteState = (button, isFavorite) => {
+    const roomName = button.dataset.favoriteRoom;
+    const icon = button.querySelector('i');
+    button.classList.toggle('is-favorite', isFavorite);
+    button.setAttribute('aria-pressed', String(isFavorite));
+    button.setAttribute('aria-label', `${isFavorite ? 'Remove' : 'Add'} ${roomName} ${isFavorite ? 'from' : 'to'} favorites`);
+    icon?.classList.toggle('fa-solid', isFavorite);
+    icon?.classList.toggle('fa-regular', !isFavorite);
+  };
+
+  try {
+    const savedFavorites = JSON.parse(localStorage.getItem('favoriteRooms') ?? '[]');
+    if (!Array.isArray(savedFavorites)) {
+      throw new TypeError('Saved favorites must be a list.');
+    }
+
+    const favorites = new Set(savedFavorites.filter(
+      (roomName) => typeof roomName === 'string' && favoriteRoomNames.has(roomName),
+    ));
+    favoriteButtons.forEach((button) => {
+      setFavoriteState(button, favorites.has(button.dataset.favoriteRoom));
+    });
+
+    favoriteButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const roomName = button.dataset.favoriteRoom;
+        const shouldFavorite = !favorites.has(roomName);
+        if (shouldFavorite) {
+          favorites.add(roomName);
+        } else {
+          favorites.delete(roomName);
+        }
+
+        try {
+          localStorage.setItem('favoriteRooms', JSON.stringify([...favorites]));
+          setFavoriteState(button, shouldFavorite);
+          if (featuredRoomsStatus) {
+            featuredRoomsStatus.textContent = '';
+          }
+        } catch (error) {
+          if (shouldFavorite) {
+            favorites.delete(roomName);
+          } else {
+            favorites.add(roomName);
+          }
+          if (featuredRoomsStatus) {
+            featuredRoomsStatus.textContent = 'Your favorite could not be saved. Check your browser storage settings and try again.';
+          }
+        }
+
+      });
+    });
+  } catch (error) {
+    if (featuredRoomsStatus) {
+      featuredRoomsStatus.textContent = 'Saved favorites could not be loaded. You can still browse and book rooms.';
+    }
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const targetId = link.getAttribute('href');
+      const target = targetId && targetId.length > 1
+        ? document.getElementById(decodeURIComponent(targetId.slice(1)))
+        : null;
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      window.history.pushState(null, '', targetId);
+    });
+  });
+
+  const backToTop = document.querySelector('.back-to-top');
+
+  if (backToTop) {
+    const updateBackToTopVisibility = () => {
+      backToTop.classList.toggle('is-visible', window.scrollY > 400);
+    };
+
+    backToTop.addEventListener('click', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    updateBackToTopVisibility();
+  }
+
+  featuredRoomsGrid.querySelectorAll('[data-book-room]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const roomName = link.dataset.roomName;
+      const roomPrice = Number(link.dataset.roomPrice);
+      if (!roomName || !Number.isFinite(roomPrice)) {
+        event.preventDefault();
+        if (featuredRoomsStatus) {
+          featuredRoomsStatus.textContent = 'This room could not be selected. Please try again later.';
+        }
+        return;
+      }
+
+      try {
+        localStorage.setItem('selectedHotelRoom', JSON.stringify({ name: roomName, price: roomPrice }));
+      } catch (error) {
+        event.preventDefault();
+        if (featuredRoomsStatus) {
+          featuredRoomsStatus.textContent = 'Your room selection could not be saved. Check your browser storage settings and try again.';
+        }
+      }
+    });
+  });
+
+  const roomCards = featuredRoomsGrid.querySelectorAll('[data-room-card]');
+  const canAnimateCards = 'IntersectionObserver' in window
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canAnimateCards) {
+    const roomCardObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    roomCards.forEach((card) => {
+      card.classList.add('room-card--animate');
+      roomCardObserver.observe(card);
+    });
+  }
+}

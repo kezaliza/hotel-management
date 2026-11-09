@@ -157,6 +157,257 @@
         </div>
       </div>
     </section>
+
+    <section class="featured-rooms" aria-labelledby="featured-rooms-title">
+      <div class="container">
+        <div class="featured-rooms__header">
+          <div>
+            <p class="featured-rooms__eyebrow">Featured Rooms</p>
+            <h2 class="section-title" id="featured-rooms-title">Handpicked Just For You</h2>
+          </div>
+          <a class="featured-rooms__view-all" href="rooms.html">
+            View All Rooms
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <p class="featured-rooms__status" id="featured-rooms-status" role="status" aria-live="polite"></p>
+
+        <div class="featured-rooms__grid" id="featured-rooms-grid">
+          <article class="card room-card" data-room-card>
+            <div class="room-card__image-wrap">
+              <img
+                class="room-card__image"
+                src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=85"
+                alt="Elegant deluxe hotel suite with a king bed and warm lighting"
+                loading="lazy">
+              <span class="room-card__tag">Popular</span>
+              <button
+                class="room-card__favorite"
+                type="button"
+                aria-label="Add Deluxe Suite to favorites"
+                aria-pressed="false"
+                data-favorite-room="Deluxe Suite">
+                <i class="fa-regular fa-heart" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="room-card__body">
+              <h3 class="room-card__name">Deluxe Suite</h3>
+              <ul class="room-card__features" aria-label="Room features">
+                <li><i class="fa-solid fa-bed" aria-hidden="true"></i> 2 Beds</li>
+                <li><i class="fa-solid fa-bath" aria-hidden="true"></i> 2 Baths</li>
+                <li><i class="fa-solid fa-ruler-combined" aria-hidden="true"></i> 450 Sq Ft</li>
+              </ul>
+              <div class="room-card__footer">
+                <p class="room-card__price"><span>$250</span> / night</p>
+                <a
+                  class="btn btn-accent room-card__book"
+                  href="booking.html"
+                  data-book-room
+                  data-room-name="Deluxe Suite"
+                  data-room-price="250">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card room-card" data-room-card>
+            <div class="room-card__image-wrap">
+              <img
+                class="room-card__image"
+                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=85"
+                alt="Spacious presidential suite with a refined lounge and city views"
+                loading="lazy">
+              <span class="room-card__tag">Luxury</span>
+              <button
+                class="room-card__favorite"
+                type="button"
+                aria-label="Add Presidential Suite to favorites"
+                aria-pressed="false"
+                data-favorite-room="Presidential Suite">
+                <i class="fa-regular fa-heart" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="room-card__body">
+              <h3 class="room-card__name">Presidential Suite</h3>
+              <ul class="room-card__features" aria-label="Room features">
+                <li><i class="fa-solid fa-bed" aria-hidden="true"></i> 3 Beds</li>
+                <li><i class="fa-solid fa-bath" aria-hidden="true"></i> 4 Baths</li>
+                <li><i class="fa-solid fa-ruler-combined" aria-hidden="true"></i> 1,200 Sq Ft</li>
+              </ul>
+              <div class="room-card__footer">
+                <p class="room-card__price"><span>$900</span> / night</p>
+                <a
+                  class="btn btn-accent room-card__book"
+                  href="booking.html"
+                  data-book-room
+                  data-room-name="Presidential Suite"
+                  data-room-price="900">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card room-card" data-room-card>
+            <div class="room-card__image-wrap">
+              <img
+                class="room-card__image"
+                src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=85"
+                alt="Ocean view hotel room with a comfortable bed and bright natural light"
+                loading="lazy">
+              <span class="room-card__tag">Best View</span>
+              <button
+                class="room-card__favorite"
+                type="button"
+                aria-label="Add Ocean View Room to favorites"
+                aria-pressed="false"
+                data-favorite-room="Ocean View Room">
+                <i class="fa-regular fa-heart" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="room-card__body">
+              <h3 class="room-card__name">Ocean View Room</h3>
+              <ul class="room-card__features" aria-label="Room features">
+                <li><i class="fa-solid fa-bed" aria-hidden="true"></i> 1 Bed</li>
+                <li><i class="fa-solid fa-bath" aria-hidden="true"></i> 1 Bath</li>
+                <li><i class="fa-solid fa-ruler-combined" aria-hidden="true"></i> 380 Sq Ft</li>
+              </ul>
+              <div class="room-card__footer">
+                <p class="room-card__price"><span>$320</span> / night</p>
+                <a
+                  class="btn btn-accent room-card__book"
+                  href="booking.html"
+                  data-book-room
+                  data-room-name="Ocean View Room"
+                  data-room-price="320">Book Now</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <section class="services-section container" id="services" aria-labelledby="services-title">
+    <div class="services-banner">
+      <div class="services-banner__image-wrap">
+        <img
+          class="services-banner__image"
+          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85"
+          alt="Elegant luxury hotel lounge with warm lighting and refined furnishings"
+          loading="lazy">
+      </div>
+
+      <div class="services-banner__content">
+        <p class="services-banner__eyebrow">Exclusive Services</p>
+        <h2 class="services-banner__title" id="services-title">A Bespoke Experience For Discerning Guests</h2>
+        <p class="services-banner__description">
+          From spa treatments to private dining, we offer a seamless and personalized stay.
+        </p>
+
+        <ul class="services-list">
+          <li class="services-list__item">
+            <i class="fa-solid fa-spa" aria-hidden="true"></i>
+            <span>Spa &amp; Wellness</span>
+          </li>
+          <li class="services-list__item">
+            <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+            <span>Fine Dining Restaurant</span>
+          </li>
+          <li class="services-list__item">
+            <i class="fa-solid fa-car" aria-hidden="true"></i>
+            <span>Airport Pickup</span>
+          </li>
+          <li class="services-list__item">
+            <i class="fa-solid fa-bell-concierge" aria-hidden="true"></i>
+            <span>24/7 Room Service</span>
+          </li>
+          <li class="services-list__item">
+            <i class="fa-solid fa-water-ladder" aria-hidden="true"></i>
+            <span>Swimming Pool</span>
+          </li>
+          <li class="services-list__item">
+            <i class="fa-solid fa-wifi" aria-hidden="true"></i>
+            <span>Free High-Speed WiFi</span>
+          </li>
+        </ul>
+
+        <a class="btn btn-accent services-banner__button" href="booking.html">Book Your Stay</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column">
+        <a class="site-brand site-footer__brand" href="index.html" aria-label="Grand Luxe Hotel home">
+          <i class="fa-solid fa-crown" aria-hidden="true"></i>
+          <span>Grand Luxe Hotel</span>
+        </a>
+        <p class="site-footer__tagline">
+          Redefining luxury hospitality with exceptional stays and unmatched service.
+        </p>
+        <div class="site-footer__socials" aria-label="Social media">
+          <a href="https://www.facebook.com/" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Quick Links</h2>
+        <ul class="site-footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="rooms.html">Rooms</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Room Types</h2>
+        <ul class="site-footer__links">
+          <li><a href="rooms.html">Deluxe Suite</a></li>
+          <li><a href="rooms.html">Presidential Suite</a></li>
+          <li><a href="rooms.html">Ocean View Room</a></li>
+          <li><a href="rooms.html">Family Room</a></li>
+          <li><a href="rooms.html">Single Room</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Contact Us</h2>
+        <ul class="site-footer__contact">
+          <li>
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+            <a href="tel:+250788000000">+250 788 000 000</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <a href="mailto:info@grandluxehotel.com">info@grandluxehotel.com</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>KN 5 Rd, Kigali, Rwanda</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner container">
+        <p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p>
+        <nav class="site-footer__legal" aria-label="Legal">
+          <a href="#privacy-policy">Privacy Policy</a>
+          <a href="#terms-and-conditions">Terms &amp; Conditions</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
 </body>
 </html>

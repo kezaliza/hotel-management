@@ -3,14 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hotel Management | Rooms</title>
+  <title>Our Rooms &amp; Suites | Grand Luxe Hotel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
   <script src="js/rooms.js" defer></script>
 </head>
 <body>
-  <!-- Rooms page -->
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home">
+        <i class="fa-solid fa-crown" aria-hidden="true"></i>
+        <span>Grand Luxe Hotel</span>
+      </a>
+
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a>
+        <a class="site-nav__link" href="index.html#about">About</a>
+        <a class="site-nav__link is-active" href="rooms.html" aria-current="page">Rooms</a>
+        <a class="site-nav__link" href="index.html#services">Services</a>
+        <a class="site-nav__link" href="index.html#blog">Blog</a>
+        <a class="site-nav__link" href="index.html#contact">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button
+          class="site-menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="site-navigation"
+          aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rooms-banner" aria-labelledby="rooms-banner-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="rooms-banner-title">Our Rooms &amp; Suites</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          <span aria-current="page">Rooms</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="rooms-page container" aria-label="Browse hotel rooms">
+      <form class="room-filters card" id="room-filters">
+        <div class="room-filter">
+          <label class="room-filter__label" for="filter-room-type">Room Type</label>
+          <select class="room-filter__control" id="filter-room-type" name="type">
+            <option value="all">All</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Deluxe Suite">Deluxe Suite</option>
+            <option value="Presidential Suite">Presidential Suite</option>
+            <option value="Ocean View Room">Ocean View Room</option>
+            <option value="Family Room">Family Room</option>
+          </select>
+        </div>
+
+        <div class="room-filter room-filter--range">
+          <label class="room-filter__label" for="filter-max-price">
+            Max Price per night
+            <output class="room-filter__price" id="filter-max-price-value" for="filter-max-price">$1,000</output>
+          </label>
+          <input
+            class="room-filter__range"
+            id="filter-max-price"
+            name="maxPrice"
+            type="range"
+            min="50"
+            max="1000"
+            step="10"
+            value="1000">
+          <div class="room-filter__range-labels" aria-hidden="true">
+            <span>$50</span>
+            <span>$1,000</span>
+          </div>
+        </div>
+
+        <div class="room-filter">
+          <label class="room-filter__label" for="filter-guests">Guests</label>
+          <select class="room-filter__control" id="filter-guests" name="guests">
+            <option value="any">Any</option>
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5 Guests</option>
+            <option value="6">6 Guests</option>
+          </select>
+        </div>
+
+        <div class="room-filter">
+          <label class="room-filter__label" for="filter-sort">Sort by</label>
+          <select class="room-filter__control" id="filter-sort" name="sort">
+            <option value="default">Default</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+
+        <button class="btn btn-outline room-filters__reset" id="reset-room-filters" type="reset">
+          Reset Filters
+        </button>
+      </form>
+
+      <div class="rooms-results">
+        <p class="rooms-results__count" id="rooms-results-count" role="status" aria-live="polite">Showing 0 rooms</p>
+        <p class="rooms-results__error" id="rooms-results-error" role="alert" hidden></p>
+      </div>
+
+      <div class="rooms-grid" id="rooms-grid" aria-live="polite"></div>
+
+      <div class="rooms-empty card" id="rooms-empty" hidden>
+        <i class="fa-solid fa-bed" aria-hidden="true"></i>
+        <h2>No rooms found</h2>
+        <p>Try adjusting your filters to find the perfect stay.</p>
+        <button class="btn btn-accent" id="reset-empty-filters" type="button">Reset Filters</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column">
+        <a class="site-brand site-footer__brand" href="index.html" aria-label="Grand Luxe Hotel home">
+          <i class="fa-solid fa-crown" aria-hidden="true"></i>
+          <span>Grand Luxe Hotel</span>
+        </a>
+        <p class="site-footer__tagline">
+          Redefining luxury hospitality with exceptional stays and unmatched service.
+        </p>
+        <div class="site-footer__socials" aria-label="Social media">
+          <a href="https://www.facebook.com/" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Quick Links</h2>
+        <ul class="site-footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="rooms.html" aria-current="page">Rooms</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#blog">Blog</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Room Types</h2>
+        <ul class="site-footer__links">
+          <li><a href="rooms.html">Deluxe Suite</a></li>
+          <li><a href="rooms.html">Presidential Suite</a></li>
+          <li><a href="rooms.html">Ocean View Room</a></li>
+          <li><a href="rooms.html">Family Room</a></li>
+          <li><a href="rooms.html">Single Room</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Contact Us</h2>
+        <ul class="site-footer__contact">
+          <li>
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+            <a href="tel:+250788000000">+250 788 000 000</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <a href="mailto:info@grandluxehotel.com">info@grandluxehotel.com</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>KN 5 Rd, Kigali, Rwanda</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner container">
+        <p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p>
+        <nav class="site-footer__legal" aria-label="Legal">
+          <a href="index.html#privacy-policy">Privacy Policy</a>
+          <a href="index.html#terms-and-conditions">Terms &amp; Conditions</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
 </body>
 </html>
