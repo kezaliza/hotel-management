@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Management | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home">
+        <i class="fa-solid fa-crown" aria-hidden="true"></i>
+        <span>Grand Luxe Hotel</span>
+      </a>
+
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link is-active" href="index.html" aria-current="page">Home</a>
+        <a class="site-nav__link" href="#about">About</a>
+        <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link" href="#services">Services</a>
+        <a class="site-nav__link" href="#blog">Blog</a>
+        <a class="site-nav__link" href="#contact">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button
+          class="site-menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="site-navigation"
+          aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__content container">
+        <p class="hero__eyebrow">Discover Extraordinary Stays</p>
+        <h1 class="hero__title" id="hero-title">
+          Where Luxury<br>
+          Meets <span>Comfort</span>
+        </h1>
+        <p class="hero__subtitle">
+          Experience world-class hospitality in the most beautiful destinations.
+          Tailored for guests who expect the finest.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn-accent" href="rooms.html">
+            Explore Rooms
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+          <a class="btn btn-outline" href="#services">Our Services</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="booking-overview container" aria-label="Plan your stay">
+      <form class="booking-search card" id="booking-search" novalidate>
+        <div class="booking-field">
+          <label class="booking-field__label" for="check-in">Check-in</label>
+          <div class="booking-field__control">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            <input id="check-in" name="checkIn" type="date" required aria-describedby="check-in-error">
+          </div>
+          <small class="booking-field__error" id="check-in-error" aria-live="polite"></small>
+        </div>
+
+        <div class="booking-field">
+          <label class="booking-field__label" for="check-out">Check-out</label>
+          <div class="booking-field__control">
+            <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+            <input id="check-out" name="checkOut" type="date" required aria-describedby="check-out-error">
+          </div>
+          <small class="booking-field__error" id="check-out-error" aria-live="polite"></small>
+        </div>
+
+        <div class="booking-field">
+          <label class="booking-field__label" for="guests">Guests</label>
+          <div class="booking-field__control">
+            <i class="fa-solid fa-user-group" aria-hidden="true"></i>
+            <select id="guests" name="guests" required aria-describedby="guests-error">
+              <option value="">Select guests</option>
+              <option value="1">1 guest</option>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+              <option value="5">5 guests</option>
+              <option value="6">6 guests</option>
+            </select>
+          </div>
+          <small class="booking-field__error" id="guests-error" aria-live="polite"></small>
+        </div>
+
+        <div class="booking-field">
+          <label class="booking-field__label" for="room-type">Room Type</label>
+          <div class="booking-field__control">
+            <i class="fa-solid fa-bed" aria-hidden="true"></i>
+            <select id="room-type" name="roomType" required aria-describedby="room-type-error">
+              <option value="">Choose room type</option>
+              <option value="any">Any</option>
+              <option value="deluxe-suite">Deluxe Suite</option>
+              <option value="presidential-suite">Presidential Suite</option>
+              <option value="ocean-view-room">Ocean View Room</option>
+              <option value="family-room">Family Room</option>
+            </select>
+          </div>
+          <small class="booking-field__error" id="room-type-error" aria-live="polite"></small>
+        </div>
+
+        <button class="btn btn-accent booking-search__submit" type="submit">
+          Check Availability
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+        <p class="booking-search__status" id="booking-search-status" role="alert" aria-live="assertive"></p>
+      </form>
+
+      <div class="stats-strip card" id="stats-strip" aria-label="Grand Luxe Hotel at a glance">
+        <div class="stats-item" aria-label="250 plus luxury rooms">
+          <i class="fa-regular fa-gem stats-item__icon" aria-hidden="true"></i>
+          <div class="stats-item__content">
+            <p class="stats-item__number"><span data-counter data-target="250" data-suffix="+">0+</span></p>
+            <p class="stats-item__label">Luxury Rooms</p>
+          </div>
+        </div>
+        <div class="stats-item" aria-label="10,000 plus happy guests">
+          <i class="fa-solid fa-user stats-item__icon" aria-hidden="true"></i>
+          <div class="stats-item__content">
+            <p class="stats-item__number"><span data-counter data-target="10000" data-suffix="+">0+</span></p>
+            <p class="stats-item__label">Happy Guests</p>
+          </div>
+        </div>
+        <div class="stats-item" aria-label="25 plus awards won">
+          <i class="fa-solid fa-trophy stats-item__icon" aria-hidden="true"></i>
+          <div class="stats-item__content">
+            <p class="stats-item__number"><span data-counter data-target="25" data-suffix="+">0+</span></p>
+            <p class="stats-item__label">Awards Won</p>
+          </div>
+        </div>
+        <div class="stats-item" aria-label="10 plus years of excellence">
+          <i class="fa-solid fa-shield-halved stats-item__icon" aria-hidden="true"></i>
+          <div class="stats-item__content">
+            <p class="stats-item__number"><span data-counter data-target="10" data-suffix="+">0+</span></p>
+            <p class="stats-item__label">Years of Excellence</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
