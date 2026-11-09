@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policies | Grand Luxe Hotel</title>
+  <meta name="description" content="Read the privacy information and terms for this Grand Luxe Hotel website demonstration.">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home">
+        <i class="fa-solid fa-crown" aria-hidden="true"></i>
+        <span>Grand Luxe Hotel</span>
+      </a>
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a>
+        <a class="site-nav__link" href="about.html">About</a>
+        <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link" href="index.html#services">Services</a>
+        <a class="site-nav__link" href="blog.html">Blog</a>
+        <a class="site-nav__link" href="contact.html">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rooms-banner" aria-labelledby="policies-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="policies-title">Policies</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          <span aria-current="page">Policies</span>
+        </nav>
+      </div>
+    </section>
+    <div class="policies-page container">
+      <section class="card" id="privacy-policy" aria-labelledby="privacy-title">
+        <h2 class="section-title" id="privacy-title">Privacy Policy</h2>
+        <p>This website is a front-end demonstration. Contact form messages, room favorites, search preferences, and booking demonstrations are saved in this browser's local storage; they are not sent to a hotel reservation service.</p>
+        <p>Anyone with access to this browser profile may be able to view or remove this local data. Clear this site's browser storage to remove it. Fonts, room photography, and the map may be provided by external services and are subject to their own privacy practices.</p>
+      </section>
+      <section class="card" id="terms-and-conditions" aria-labelledby="terms-title">
+        <h2 class="section-title" id="terms-title">Terms &amp; Conditions</h2>
+        <p>This site is a non-production demonstration. Room availability, prices, bookings, messages, and payment choices are sample data stored only in your browser and do not create a real reservation or payment.</p>
+        <p>Do not enter sensitive personal or payment information. The website is provided for demonstration purposes without guarantees of accuracy, availability, or uninterrupted operation.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner container">
+        <p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p>
+        <nav class="site-footer__legal" aria-label="Legal">
+          <a href="#privacy-policy">Privacy Policy</a>
+          <a href="#terms-and-conditions">Terms &amp; Conditions</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+</body>
+</html>
