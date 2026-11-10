@@ -1,3 +1,7 @@
+const EMAILJS_PUBLIC_KEY = "PASTE_HERE";
+const EMAILJS_SERVICE_ID = "PASTE_HERE";
+const EMAILJS_TEMPLATE_ID = "PASTE_HERE";
+
 const roomImageFallback = 'public/room-placeholder.svg';
 
 document.addEventListener('error', (event) => {
@@ -582,7 +586,7 @@ if (contactForm instanceof HTMLFormElement) {
     });
   });
 
-  contactForm.addEventListener('submit', (event) => {
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const isValid = contactFields.map(validateContactField).every(Boolean);
     if (!isValid) {
@@ -598,6 +602,40 @@ if (contactForm instanceof HTMLFormElement) {
       date: new Date().toISOString(),
     };
 
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const originalButtonContent = submitButton.innerHTML;
+    contactStatus.textContent = '';
+    submitButton.disabled = true;
+    submitButton.setAttribute('aria-busy', 'true');
+    submitButton.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+
+    try {
+      if (
+        EMAILJS_PUBLIC_KEY === 'PASTE_HERE'
+        || EMAILJS_SERVICE_ID === 'PASTE_HERE'
+        || EMAILJS_TEMPLATE_ID === 'PASTE_HERE'
+      ) {
+        throw new Error('Configure the EmailJS public key, service ID, and template ID in js/main.js.');
+      }
+
+      if (!window.emailjs) {
+        throw new Error('EmailJS did not load.');
+      }
+
+      await window.emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        message,
+        { publicKey: EMAILJS_PUBLIC_KEY },
+      );
+    } catch {
+      contactStatus.textContent = 'Your message could not be sent. Please try again.';
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-busy');
+      submitButton.innerHTML = originalButtonContent;
+      return;
+    }
+
     try {
       const savedMessages = localStorage.getItem('hotelMessages');
       const messages = savedMessages ? JSON.parse(savedMessages) : [];
@@ -605,8 +643,11 @@ if (contactForm instanceof HTMLFormElement) {
         throw new TypeError('Saved messages must be a list.');
       }
       localStorage.setItem('hotelMessages', JSON.stringify([...messages, message]));
-    } catch (error) {
-      contactStatus.textContent = 'Your message could not be saved. Please check your browser storage settings and try again.';
+    } catch {
+      contactStatus.textContent = 'Your message was sent, but could not be saved in this browser. Please check your browser storage settings.';
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-busy');
+      submitButton.innerHTML = originalButtonContent;
       return;
     }
 
