@@ -24,7 +24,8 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 └── public/
     ├── favicon.svg     # Site icon
     ├── room-placeholder.svg
-    └── room1.jpg … room9.jpg
+    ├── room1.jpg … room6.jpg
+    └── Additional room photos
 ```
 
 ## Run locally with Live Server
@@ -57,4 +58,4 @@ This data is local to the browser profile and is not shared with a server or oth
 
 ## Room photos
 
-Room photos live in `public/`: `room1.jpg`–`room3.jpg` are used for Deluxe Suites, `room4.jpg`–`room5.jpg` for Presidential Suites, `room6.jpg`–`room7.jpg` for Ocean View Rooms, `room8.jpg` for Family Rooms, and `room9.jpg` for Single Rooms. The first path is the cover photo. A room's original Unsplash photo is used as a fallback if a local image cannot load, then the placeholder is used if that fallback also fails.
+Room photos live in `public/`. The versioned default catalog includes the numbered room photos and the additional room images; each room's first `images` entry is its cover. If an image path and its configured fallback cannot load, the room placeholder is shown.

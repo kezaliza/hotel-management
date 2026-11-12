@@ -380,18 +380,23 @@ if (featuredRoomsGrid) {
   if (typeof window.loadHotelRooms === 'function') {
     try {
       const roomCatalog = window.loadHotelRooms();
-      const featuredTypes = new Set(['Deluxe Suite', 'Presidential Suite', 'Ocean View Room']);
-      featuredRoomsGrid.querySelectorAll('[data-room-card]').forEach((card) => {
-        const name = card.querySelector('.room-card__name')?.textContent.trim();
-        if (!featuredTypes.has(name)) {
-          return;
-        }
-        const room = roomCatalog.find((item) => item.type === name);
+      const featuredRooms = roomCatalog
+        .filter((room) => room.status === 'Available')
+        .sort((first, second) => second.price - first.price)
+        .slice(0, 3);
+      featuredRoomsGrid.querySelectorAll('[data-room-card]').forEach((card, index) => {
+        const room = featuredRooms[index];
         if (!room) {
+          card.hidden = true;
           return;
         }
+
+        card.hidden = false;
         const image = card.querySelector('.room-card__image');
         const galleryButton = card.querySelector('[data-open-gallery]');
+        const favoriteButton = card.querySelector('[data-favorite-room]');
+        const bookLink = card.querySelector('[data-book-room]');
+        const name = room.name;
         image.src = makeGalleryUrl(room.images[0]) || roomImageFallback;
         image.dataset.fallbackSrc = makeGalleryUrl(room.image);
         image.alt = `${name} room cover photo`;
@@ -401,6 +406,22 @@ if (featuredRoomsGrid) {
         galleryButton.dataset.galleryImages = JSON.stringify(room.images);
         galleryButton.setAttribute('aria-label', `View ${room.images.length} photos of ${name}`);
         galleryButton.innerHTML = `<i class="fa-solid fa-camera" aria-hidden="true"></i> ${room.images.length}`;
+        favoriteButton.dataset.favoriteRoom = name;
+        favoriteButton.setAttribute('aria-label', `Add ${name} to favorites`);
+        favoriteButton.setAttribute('aria-pressed', 'false');
+        favoriteButton.classList.remove('is-favorite');
+        favoriteButton.querySelector('i').className = 'fa-regular fa-heart';
+        card.querySelector('.room-card__tag').textContent = room.type;
+        card.querySelector('.room-card__name').textContent = name;
+        card.querySelector('.room-card__features').innerHTML = `
+          <li><i class="fa-solid fa-bed" aria-hidden="true"></i> ${room.beds} ${room.beds === 1 ? 'Bed' : 'Beds'}</li>
+          <li><i class="fa-solid fa-bath" aria-hidden="true"></i> ${room.baths} ${room.baths === 1 ? 'Bath' : 'Baths'}</li>
+          <li><i class="fa-solid fa-ruler-combined" aria-hidden="true"></i> ${new Intl.NumberFormat('en-US').format(room.size)} Sq Ft</li>
+        `;
+        card.querySelector('.room-card__price span').textContent = `$${new Intl.NumberFormat('en-US').format(room.price)}`;
+        bookLink.dataset.roomId = room.id;
+        bookLink.dataset.roomName = name;
+        bookLink.dataset.roomPrice = String(room.price);
       });
     } catch (error) {
       if (featuredRoomsStatus) {
@@ -473,7 +494,8 @@ if (featuredRoomsGrid) {
     link.addEventListener('click', (event) => {
       const roomName = link.dataset.roomName;
       const roomPrice = Number(link.dataset.roomPrice);
-      if (!roomName || !Number.isFinite(roomPrice)) {
+      const roomId = link.dataset.roomId;
+      if (!roomName || !roomId || !Number.isFinite(roomPrice)) {
         event.preventDefault();
         if (featuredRoomsStatus) {
           featuredRoomsStatus.textContent = 'This room could not be selected. Please try again later.';
@@ -482,7 +504,7 @@ if (featuredRoomsGrid) {
       }
 
       try {
-        localStorage.setItem('selectedHotelRoom', JSON.stringify({ name: roomName, price: roomPrice }));
+        localStorage.setItem('selectedHotelRoom', JSON.stringify({ id: roomId, name: roomName, price: roomPrice }));
       } catch (error) {
         event.preventDefault();
         if (featuredRoomsStatus) {
