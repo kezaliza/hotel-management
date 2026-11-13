@@ -171,6 +171,105 @@ if (messageList && emptyMessages && messagesError && messagesTotal && messageCou
   renderMessages();
 }
 
+const reviewList = document.querySelector('#admin-reviews-list');
+const reviewCount = document.querySelector('#admin-review-count');
+const reviewsTotal = document.querySelector('#admin-reviews-total');
+const reviewsError = document.querySelector('#admin-reviews-error');
+
+const renderAdminReviews = () => {
+  if (!reviewList || !reviewCount || !reviewsTotal || !reviewsError) {
+    return;
+  }
+  try {
+    const reviews = window.hotelReviews.readReviews();
+    reviewCount.textContent = String(reviews.length);
+    reviewsTotal.textContent = `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`;
+    reviewsError.hidden = true;
+    reviewsError.textContent = '';
+    reviewList.replaceChildren(...reviews.map((review) => {
+      const row = document.createElement('tr');
+      const values = [
+        review.name || 'Unknown guest',
+        review.service || 'Overall Stay',
+        `${Number(review.rating) || 0} / 5`,
+        review.comment || '',
+        formatMessageDate(review.date),
+        review.status === 'Hidden' ? 'Hidden' : 'Visible',
+      ];
+      values.forEach((value, index) => {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        if (index === 3) {
+          cell.className = 'admin-reviews__comment';
+        }
+        row.append(cell);
+      });
+      const actions = document.createElement('td');
+      actions.className = 'admin-reviews__actions';
+      const visibility = document.createElement('button');
+      visibility.className = 'btn btn-outline';
+      visibility.type = 'button';
+      visibility.dataset.toggleReview = review.id;
+      visibility.textContent = review.status === 'Hidden' ? 'Show' : 'Hide';
+      const remove = document.createElement('button');
+      remove.className = 'btn btn-outline admin-message__delete';
+      remove.type = 'button';
+      remove.dataset.deleteAdminReview = review.id;
+      remove.textContent = 'Delete';
+      actions.append(visibility, remove);
+      row.append(actions);
+      return row;
+    }));
+  } catch (error) {
+    reviewList.replaceChildren();
+    reviewCount.textContent = '!';
+    reviewsTotal.textContent = 'Reviews unavailable';
+    reviewsError.textContent = 'Reviews could not be loaded from browser storage.';
+    reviewsError.hidden = false;
+  }
+};
+
+if (reviewList && reviewCount && reviewsTotal && reviewsError) {
+  renderAdminReviews();
+  reviewList.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+    const button = event.target.closest('[data-toggle-review], [data-delete-admin-review]');
+    if (!button) {
+      return;
+    }
+    try {
+      const reviews = window.hotelReviews.readReviews();
+      const reviewId = button.dataset.toggleReview || button.dataset.deleteAdminReview;
+      const review = reviews.find((item) => item.id === reviewId);
+      if (!review) {
+        throw new RangeError('The selected review no longer exists.');
+      }
+      if (button.hasAttribute('data-toggle-review')) {
+        review.status = review.status === 'Hidden' ? 'Visible' : 'Hidden';
+        window.hotelReviews.writeReviews(reviews);
+        renderAdminReviews();
+        showMessageToast(review.status === 'Hidden' ? 'Review hidden.' : 'Review is visible.');
+      } else {
+        window.hotelReviews.writeReviews(reviews.filter((item) => item.id !== reviewId));
+        renderAdminReviews();
+        showMessageToast('Review deleted.');
+      }
+    } catch (error) {
+      showMessageToast(error instanceof RangeError
+        ? error.message
+        : 'The review action could not be completed. Check browser storage and try again.', true);
+    }
+  });
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'hotelReviews') {
+      renderAdminReviews();
+    }
+  });
+}
+
 const roomList = document.querySelector('#admin-rooms-list');
     const roomCount = document.querySelector('#admin-room-count');
     const roomError = document.querySelector('#admin-rooms-error');

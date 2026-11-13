@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Reviews | Grand Luxe Hotel</title>
+  <meta name="description" content="Read guest reviews and share your experience at Grand Luxe Hotel in Kigali.">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/reviews.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a>
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a>
+        <a class="site-nav__link" href="about.html">About</a>
+        <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link is-active" href="reviews.html" aria-current="page">Reviews</a>
+        <a class="site-nav__link" href="index.html#services">Services</a>
+        <a class="site-nav__link" href="blog.html">Blog</a>
+        <a class="site-nav__link" href="contact.html">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rooms-banner" aria-labelledby="reviews-banner-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="reviews-banner-title">Guest Reviews</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page">Reviews</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="reviews-page container" aria-label="Guest reviews">
+      <p class="reviews-error" data-review-error role="alert" hidden></p>
+      <section class="reviews-summary card" aria-labelledby="reviews-summary-title">
+        <div class="reviews-summary__score">
+          <p class="page-eyebrow">Guest Satisfaction</p>
+          <h2 class="section-title" id="reviews-summary-title"><span id="reviews-average">0.0</span><span class="reviews-summary__out-of"> / 5</span></h2>
+          <p class="reviews-stars" id="reviews-average-stars" aria-label="Average guest rating"></p>
+          <p class="reviews-summary__total"><strong id="reviews-total">0</strong> guest reviews</p>
+        </div>
+        <div class="reviews-summary__chart" id="reviews-rating-chart" aria-label="Review rating breakdown"></div>
+      </section>
+
+      <section class="reviews-write" id="write-review" aria-labelledby="write-review-title">
+        <div class="reviews-section-heading">
+          <div>
+            <p class="page-eyebrow">Your Experience Matters</p>
+            <h2 class="section-title" id="write-review-title">Write a Review</h2>
+          </div>
+        </div>
+        <div class="reviews-login card" id="reviews-login">
+          <p>Login to write a review. This site uses a local demo sign-in and does not verify identities.</p>
+          <a class="btn btn-accent" href="account.html#login">Login to write a review</a>
+        </div>
+        <form class="reviews-form card" id="review-form" novalidate hidden>
+          <p class="reviews-form__signed-in">Writing as <strong id="reviewer-name"></strong> · <a href="account.html">Manage account</a></p>
+          <input name="reviewId" type="hidden">
+          <div class="reviews-form__field">
+            <span class="reviews-form__label" id="review-rating-label">Star rating <span aria-hidden="true">*</span></span>
+            <div class="reviews-rating-input" id="review-rating-input" role="group" aria-labelledby="review-rating-label"></div>
+            <p class="reviews-form__error" id="review-rating-error" hidden></p>
+          </div>
+          <label class="reviews-form__field">
+            <span class="reviews-form__label">What service is this about? <span aria-hidden="true">*</span></span>
+            <select name="service" required>
+              <option value="">Choose a service</option>
+              <option>Room</option>
+              <option>Spa &amp; Wellness</option>
+              <option>Restaurant</option>
+              <option>Airport Pickup</option>
+              <option>Room Service</option>
+              <option>Swimming Pool</option>
+              <option>Staff &amp; Reception</option>
+              <option>Overall Stay</option>
+            </select>
+            <span class="reviews-form__error" data-error-for="service" hidden></span>
+          </label>
+          <label class="reviews-form__field">
+            <span class="reviews-form__label">Title <span aria-hidden="true">*</span></span>
+            <input name="title" type="text" maxlength="80" required>
+            <span class="reviews-form__error" data-error-for="title" hidden></span>
+          </label>
+          <label class="reviews-form__field">
+            <span class="reviews-form__label">Comment <span aria-hidden="true">*</span></span>
+            <textarea name="comment" rows="5" minlength="10" maxlength="500" required aria-describedby="review-comment-counter"></textarea>
+            <span class="reviews-form__meta"><span class="reviews-form__error" data-error-for="comment" hidden></span><span id="review-comment-counter" aria-live="polite">0 / 500 characters</span></span>
+          </label>
+          <p class="reviews-form__error" id="review-form-error" role="alert" hidden></p>
+          <div class="reviews-form__actions">
+            <button class="btn btn-accent" id="review-submit" type="submit">Submit Review</button>
+            <button class="btn btn-outline" id="review-cancel-edit" type="button" hidden>Cancel Edit</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="reviews-list-section" aria-labelledby="all-reviews-title">
+        <div class="reviews-section-heading">
+          <div>
+            <p class="page-eyebrow">Kind Words From Our Guests</p>
+            <h2 class="section-title" id="all-reviews-title">All Reviews</h2>
+          </div>
+          <div class="reviews-filters" aria-label="Filter and sort reviews">
+            <label>Rating
+              <select id="review-filter-rating">
+                <option value="all">All ratings</option>
+                <option value="5">5 stars</option>
+                <option value="4">4 stars</option>
+                <option value="3">3 stars</option>
+                <option value="2">2 stars</option>
+                <option value="1">1 star</option>
+              </select>
+            </label>
+            <label>Service
+              <select id="review-filter-service">
+                <option value="all">All services</option>
+                <option>Room</option>
+                <option>Spa &amp; Wellness</option>
+                <option>Restaurant</option>
+                <option>Airport Pickup</option>
+                <option>Room Service</option>
+                <option>Swimming Pool</option>
+                <option>Staff &amp; Reception</option>
+                <option>Overall Stay</option>
+              </select>
+            </label>
+            <label>Sort by
+              <select id="review-sort">
+                <option value="newest">Newest</option>
+                <option value="highest">Highest rating</option>
+                <option value="lowest">Lowest rating</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="reviews-list" id="reviews-list" aria-live="polite"></div>
+        <p class="reviews-empty card" id="reviews-empty" hidden>No reviews yet. Be the first!</p>
+        <p class="reviews-empty card" id="reviews-no-match" hidden>No reviews match those filters.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column">
+        <a class="site-brand site-footer__brand" href="index.html"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a>
+        <p class="site-footer__tagline">Redefining luxury hospitality with exceptional stays and unmatched service.</p>
+      </div>
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Quick Links</h2>
+        <ul class="site-footer__links"><li><a href="index.html">Home</a></li><li><a href="rooms.html">Rooms</a></li><li><a href="reviews.html" aria-current="page">Reviews</a></li><li><a href="account.html">My Account</a></li><li><a href="contact.html">Contact</a></li></ul>
+      </div>
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Contact Us</h2>
+        <ul class="site-footer__contact"><li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:0796485988">0796485988</a></li><li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:kezaliza379@gmail.com">kezaliza379@gmail.com</a></li><li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>KN 5 Rd, Kigali, Rwanda</span></li></ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom"><div class="site-footer__bottom-inner container"><p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p><nav class="site-footer__legal" aria-label="Legal"><a href="policies.html#privacy-policy">Privacy Policy</a><a href="policies.html#terms-and-conditions">Terms &amp; Conditions</a></nav></div></div>
+  </footer>
+  <div class="reviews-toast" id="reviews-toast" role="status" aria-live="polite"></div>
+  <button class="back-to-top" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+</body>
+</html>

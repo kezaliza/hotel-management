@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/rooms.js" defer></script>
+  <script src="js/reviews.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -25,6 +26,7 @@
         <a class="site-nav__link is-active" href="index.html" aria-current="page">Home</a>
         <a class="site-nav__link" href="about.html">About</a>
         <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link" href="reviews.html">Reviews</a>
         <a class="site-nav__link" href="index.html#services">Services</a>
         <a class="site-nav__link" href="blog.html">Blog</a>
         <a class="site-nav__link" href="contact.html">Contact</a>
@@ -298,6 +300,19 @@
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="guest-reviews-section" aria-labelledby="guest-reviews-title">
+      <div class="container">
+        <div class="guest-reviews-section__heading">
+          <div>
+            <p class="page-eyebrow">Guest Experiences</p>
+            <h2 class="section-title" id="guest-reviews-title">What Our Guests Say</h2>
+          </div>
+          <a class="btn btn-outline" href="reviews.html">Read All Reviews</a>
+        </div>
+        <div class="guest-reviews-section__grid" id="home-reviews-list" aria-live="polite"></div>
       </div>
     </section>
   </main>

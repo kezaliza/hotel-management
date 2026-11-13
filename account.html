@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | Grand Luxe Hotel</title>
+  <meta name="description" content="View your local demo bookings and reviews at Grand Luxe Hotel.">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/reviews.js" defer></script>
+  <script src="js/account.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner container">
+      <a class="site-brand" href="index.html" aria-label="Grand Luxe Hotel home"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a>
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        <a class="site-nav__link" href="index.html">Home</a>
+        <a class="site-nav__link" href="about.html">About</a>
+        <a class="site-nav__link" href="rooms.html">Rooms</a>
+        <a class="site-nav__link" href="reviews.html">Reviews</a>
+        <a class="site-nav__link" href="index.html#services">Services</a>
+        <a class="site-nav__link" href="blog.html">Blog</a>
+        <a class="site-nav__link" href="contact.html">Contact</a>
+        <a class="btn btn-accent site-nav__mobile-book" href="booking.html">Book Now</a>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn-accent site-header__book" href="booking.html">Book Now</a>
+        <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="rooms-banner" aria-labelledby="account-banner-title">
+      <div class="rooms-banner__content container">
+        <h1 class="rooms-banner__title" id="account-banner-title">My Account</h1>
+        <nav class="rooms-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page">My Account</span></nav>
+      </div>
+    </section>
+    <section class="account-page container">
+      <div class="account-demo-notice"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Demo account only: sign-in is stored in this browser and does not verify your identity.</div>
+      <section class="account-login card" id="login" aria-labelledby="account-login-title">
+        <h2 class="section-title" id="account-login-title">Customer Login</h2>
+        <p>Enter your name and the email used for your booking to view your account.</p>
+        <form id="account-login-form">
+          <label>Name<input name="name" autocomplete="name" required maxlength="80"></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+          <p class="account-error" id="account-login-error" role="alert" hidden></p>
+          <button class="btn btn-accent" type="submit">Continue</button>
+        </form>
+        <p class="account-login__register">New to Grand Luxe Hotel? <a href="register.html">Create a guest profile</a></p>
+      </section>
+      <section class="account-content" id="account-content" hidden>
+        <div class="account-toolbar">
+          <p>Signed in as <strong id="account-customer-name"></strong> (<span id="account-customer-email"></span>)</p>
+          <button class="btn btn-outline" id="account-logout" type="button">Sign Out</button>
+        </div>
+        <div class="account-tabs" role="tablist" aria-label="Account sections">
+          <button class="account-tab is-active" type="button" role="tab" id="account-bookings-tab" aria-controls="account-bookings-panel" aria-selected="true">My Bookings</button>
+          <button class="account-tab" type="button" role="tab" id="account-reviews-tab" aria-controls="account-reviews-panel" aria-selected="false">My Reviews</button>
+        </div>
+        <section class="account-panel" id="account-bookings-panel" role="tabpanel" aria-labelledby="account-bookings-tab">
+          <div class="account-list" id="account-bookings-list"></div>
+          <p class="account-empty card" id="account-bookings-empty" hidden>No bookings found for this email address.</p>
+        </section>
+        <section class="account-panel" id="account-reviews-panel" role="tabpanel" aria-labelledby="account-reviews-tab" hidden>
+          <div class="reviews-list" id="account-reviews-list"></div>
+          <p class="account-empty card" id="account-reviews-empty" hidden>You have not written a review yet. <a href="reviews.html#write-review">Write a review</a></p>
+        </section>
+        <p class="account-error" id="account-data-error" role="alert" hidden></p>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer__main container">
+      <div class="site-footer__brand-column"><a class="site-brand site-footer__brand" href="index.html"><i class="fa-solid fa-crown" aria-hidden="true"></i><span>Grand Luxe Hotel</span></a><p class="site-footer__tagline">Redefining luxury hospitality with exceptional stays and unmatched service.</p></div>
+      <div class="site-footer__column"><h2 class="site-footer__heading">Quick Links</h2><ul class="site-footer__links"><li><a href="index.html">Home</a></li><li><a href="rooms.html">Rooms</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="account.html" aria-current="page">My Account</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="site-footer__column"><h2 class="site-footer__heading">Contact Us</h2><ul class="site-footer__contact"><li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:0796485988">0796485988</a></li><li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:kezaliza379@gmail.com">kezaliza379@gmail.com</a></li><li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>KN 5 Rd, Kigali, Rwanda</span></li></ul></div>
+    </div>
+    <div class="site-footer__bottom"><div class="site-footer__bottom-inner container"><p>&copy; 2026 Grand Luxe Hotel. All Rights Reserved.</p><nav class="site-footer__legal" aria-label="Legal"><a href="policies.html#privacy-policy">Privacy Policy</a><a href="policies.html#terms-and-conditions">Terms &amp; Conditions</a></nav></div></div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+</body>
+</html>

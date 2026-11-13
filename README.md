@@ -10,6 +10,7 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 ├── about.html          # Hotel story and team
 ├── rooms.html          # Room catalog and filters
 ├── booking.html        # Booking form and summary
+├── register.html       # Guest profile registration demo
 ├── blog.html           # Hotel and Kigali journal
 ├── contact.html        # Contact form and location
 ├── policies.html       # Privacy and demonstration terms
@@ -20,6 +21,7 @@ A responsive hotel website built with plain HTML, CSS, and vanilla JavaScript. I
 │   ├── main.js         # Shared navigation, home, and contact behavior
 │   ├── rooms.js        # Room catalog and room filters
 │   ├── booking.js      # Booking form and price calculations
+│   ├── register.js     # Local demo guest profile registration
 │   └── admin.js        # Contact-message inbox
 └── public/
     ├── favicon.svg     # Site icon
@@ -50,11 +52,16 @@ The demonstration stores data in the browser's `localStorage`:
 - `hotelRooms` — editable room catalog
 - `hotelBookings` — demonstration bookings
 - `hotelMessages` — contact form messages
+- `hotelReviews` — guest reviews and moderation status
+- `hotelCustomer` — local demo customer session used by reviews and account pages
+- `hotelCustomers` — guest profiles registered in this browser
 - `favoriteRooms` — favorite room names
 - `hotelBookingSearch` and `selectedHotelRoom` — search and booking handoff data
 - `hotelDataVersion` — version of the default room catalog
 
 This data is local to the browser profile and is not shared with a server or other devices.
+
+Customer profiles and sign-in are front-end demonstrations only: profile data is stored in this browser and does not verify identity. Reviews and bookings are scoped by email in the current browser. Use a real authentication provider and server-side storage before collecting real customer data.
 
 ## Room photos
 

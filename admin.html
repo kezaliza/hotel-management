@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/rooms.js" defer></script>
+  <script src="js/reviews.js" defer></script>
   <script src="js/admin.js" defer></script>
 </head>
 <body class="admin-page">
@@ -31,6 +32,11 @@
           <i class="fa-regular fa-envelope" aria-hidden="true"></i>
           <span>Messages</span>
           <span class="admin-menu__count" id="admin-message-count">0</span>
+        </a>
+        <a class="admin-menu__link" href="#reviews">
+          <i class="fa-regular fa-star" aria-hidden="true"></i>
+          <span>Reviews</span>
+          <span class="admin-menu__count" id="admin-review-count">0</span>
         </a>
       </nav>
       <a class="admin-sidebar__website" href="index.html">
@@ -82,6 +88,25 @@
           <i class="fa-regular fa-envelope" aria-hidden="true"></i>
           <h3>No messages yet</h3>
           <p>New contact form submissions will appear here.</p>
+        </div>
+      </section>
+
+      <section class="admin-reviews" id="reviews" aria-labelledby="admin-reviews-title">
+        <div class="admin-messages__heading">
+          <div>
+            <h2 id="admin-reviews-title">Guest Reviews</h2>
+            <p>Review and moderate feedback submitted by hotel guests.</p>
+          </div>
+          <span class="admin-messages__total" id="admin-reviews-total">0 reviews</span>
+        </div>
+        <p class="admin-messages__error" id="admin-reviews-error" role="alert" hidden></p>
+        <div class="admin-rooms__table-wrap card">
+          <table class="admin-rooms__table admin-reviews__table">
+            <thead>
+              <tr><th scope="col">Customer</th><th scope="col">Service</th><th scope="col">Rating</th><th scope="col">Comment</th><th scope="col">Date</th><th scope="col">Status</th><th scope="col">Actions</th></tr>
+            </thead>
+            <tbody id="admin-reviews-list"></tbody>
+          </table>
         </div>
       </section>
 
